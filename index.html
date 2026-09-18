@@ -84,7 +84,7 @@
       <section class="galeria" aria-label="Galería de imágenes del producto">
         <div class="galeria__badges">
           <span class="badge-oferta">🔥 OFERTA POR TIEMPO LIMITADO</span>
-          <span class="badge-envio">🚚 ENVÍO Y PAGO CONTRAENTREGA A TODO EL PERÚ</span>
+          <span class="badge-envio">🚚 ENVÍO GRATIS A TODO EL PERÚ</span>
         </div>
 
         <div class="galeria__principal-wrap">
@@ -368,15 +368,15 @@
         </div>
 
         <div class="info-compra__pills">
-          <span class="pill">🚚 Envío y Pago Contraentrega a todo el Perú</span>
+          <span class="pill">🚚 Envío GRATIS a todo el Perú</span>
           <span class="pill pill--azul">💳 Pago al Recibir</span>
         </div>
 
         <!-- EDITAR: precio regular y precio tachado (debe coincidir con js/config.js) -->
         <div class="precio-actual-wrap">
-          <span class="precio-actual">S/ 499.00</span>
+          <span class="precio-actual">S/ 529.00</span>
           <span class="precio-tachado">S/ 650.00</span>
-          <span class="badge-descuento">-23%</span>
+          <span class="badge-descuento">-19%</span>
         </div>
 
         <!--
@@ -388,7 +388,7 @@
         <!-- CTA principal -->
         <button class="btn-cta-principal" data-abrir-checkout>
           🛒 PEDIR Y PAGAR AL RECIBIR
-          <span class="btn-cta-principal__sub">Envío y Pago Contraentrega</span>
+          <span class="btn-cta-principal__sub">Envío Gratis · Pago al Recibir</span>
         </button>
 
         <div class="mej-garantia">
@@ -677,7 +677,7 @@
         </details>
         <details class="mej-faq__item">
           <summary>¿El envío tiene costo?</summary>
-          <div class="mej-faq__resp">El envío es a <strong>todo el Perú, con pago contraentrega</strong>: pagas el producto (y el envío, si aplica) recién cuando lo recibes.</div>
+          <div class="mej-faq__resp">No, el <strong>envío es GRATIS</strong> a todo el Perú. En Lima lo pagas contraentrega junto con el producto. A provincia, coordinamos un pequeño <strong>adelanto de S/ 20</strong> por WhatsApp para el flete de Shalom, y la diferencia la pagas al recoger tu pedido.</div>
         </details>
         <details class="mej-faq__item">
           <summary>¿Es difícil de armar?</summary>
@@ -733,15 +733,15 @@
         <div>
           <div class="barra-fija-inferior__nombre" id="barra-fija-nombre">Elevador de Paneles de Drywall</div>
           <div class="barra-fija-inferior__precio">
-            <strong id="barra-fija-precio">S/ 499.00</strong> <span class="precio-tachado">S/ 650.00</span>
-            <span class="badge-descuento" id="barra-fija-badge">-23%</span>
+            <strong id="barra-fija-precio">S/ 529.00</strong> <span class="precio-tachado">S/ 650.00</span>
+            <span class="badge-descuento" id="barra-fija-badge">-19%</span>
           </div>
         </div>
       </div>
       <span class="barra-fija-inferior__stock">🔥 <span data-stock-numero>12</span> unidades</span>
       <button class="barra-fija-inferior__cta" data-abrir-checkout>
         PEDIR Y PAGAR AL RECIBIR
-        <span>Envío y Pago Contraentrega</span>
+        <span>Envío Gratis · Pago al Recibir</span>
       </button>
     </div>
   </div>
@@ -768,11 +768,13 @@
           <div class="paso-envio-full__subtitulo">Elige tu destino para continuar con tus datos</div>
 
           <button class="paso-envio-full__opcion" data-paso1-tipo="lima" type="button">
-            <span class="paso-envio-full__icono">🚚</span>
+            <span class="paso-envio-full__icono">🏠</span>
             <div class="paso-envio-full__texto">
-              <div class="paso-envio-full__titulo-opcion">Envío a LIMA</div>
-              <div class="paso-envio-full__subtitulo-opcion">Recibe en la puerta de tu casa</div>
-              <div class="paso-envio-full__precio">+ S/ 19.00 de delivery</div>
+              <div class="paso-envio-full__fila-titulo">
+                <span class="paso-envio-full__titulo-opcion">Lima - Paga en casa</span>
+                <span class="badge-gratis">Gratis</span>
+              </div>
+              <div class="paso-envio-full__subtitulo-opcion">Pagas cuando recibes</div>
             </div>
             <span class="paso-envio-full__flecha">›</span>
           </button>
@@ -780,9 +782,11 @@
           <button class="paso-envio-full__opcion" data-paso1-tipo="provincia" type="button">
             <span class="paso-envio-full__icono">📦</span>
             <div class="paso-envio-full__texto">
-              <div class="paso-envio-full__titulo-opcion">Envío a PROVINCIA</div>
-              <div class="paso-envio-full__subtitulo-opcion">Envíos por Shalom</div>
-              <div class="paso-envio-full__precio">Pagas el flete en la agencia</div>
+              <div class="paso-envio-full__fila-titulo">
+                <span class="paso-envio-full__titulo-opcion">Provincia - Envió por Shalom</span>
+                <span class="badge-gratis">Gratis</span>
+              </div>
+              <div class="paso-envio-full__subtitulo-opcion">Adelanto de S/. 20 y diferencia pagas al recoger</div>
             </div>
             <span class="paso-envio-full__flecha">›</span>
           </button>
@@ -797,17 +801,17 @@
               <span class="selector-envio-mini__label">Destino:</span>
               <div class="selector-envio">
                 <button class="selector-envio__opcion activa" data-tipo-envio="lima" type="button">
-                  <span class="selector-envio__icono">🚚</span>
+                  <span class="selector-envio__icono">🏠</span>
                   <div>
-                    <div class="selector-envio__titulo">Envío a LIMA</div>
-                    <div class="selector-envio__subtitulo">Recibe en la puerta de tu casa</div>
+                    <div class="selector-envio__titulo">Lima - Paga en casa <span class="badge-gratis badge-gratis--mini">Gratis</span></div>
+                    <div class="selector-envio__subtitulo">Pagas cuando recibes</div>
                   </div>
                 </button>
                 <button class="selector-envio__opcion" data-tipo-envio="provincia" type="button">
                   <span class="selector-envio__icono">📦</span>
                   <div>
-                    <div class="selector-envio__titulo">Envío a PROVINCIA</div>
-                    <div class="selector-envio__subtitulo">Envíos por Shalom</div>
+                    <div class="selector-envio__titulo">Provincia - Envió por Shalom <span class="badge-gratis badge-gratis--mini">Gratis</span></div>
+                    <div class="selector-envio__subtitulo">Adelanto de S/. 20 y diferencia pagas al recoger</div>
                   </div>
                 </button>
               </div>
@@ -945,12 +949,12 @@
             -->
             <img src="assets/images/producto-hero-principal.jpg" alt="Elevador de Paneles de Drywall" class="resumen-pedido__producto-img"  loading="lazy" />
             <div class="resumen-pedido__nombre" id="resumen-producto-nombre">Elevador de Paneles de Drywall</div>
-            <div class="resumen-pedido__precio" id="resumen-producto-precio-unitario">S/ 499.00</div>
+            <div class="resumen-pedido__precio" id="resumen-producto-precio-unitario">S/ 529.00</div>
 
             <div class="resumen-pedido__titulo">Resumen de tu pedido</div>
             <div class="resumen-pedido__linea">
               <span id="resumen-linea-producto-cantidad">Elevador de Paneles de Drywall (1 unidad)</span>
-              <span id="resumen-linea-producto-precio">S/ 499.00</span>
+              <span id="resumen-linea-producto-precio">S/ 529.00</span>
             </div>
             <!--
               Sin línea de "Color" (no aplica) ni de "Instalación"
@@ -977,8 +981,8 @@
               <div class="resumen-pedido__garantia">
                 <span class="resumen-pedido__garantia-icono">🚚</span>
                 <div>
-                  <span class="resumen-pedido__garantia-titulo">Envío a todo el Perú</span>
-                  <span class="resumen-pedido__garantia-texto">Pago contraentrega, rápido y seguro</span>
+                  <span class="resumen-pedido__garantia-titulo">Envío GRATIS a todo el Perú</span>
+                  <span class="resumen-pedido__garantia-texto">Rápido y seguro, a Lima y a provincias</span>
                 </div>
               </div>
               <div class="resumen-pedido__garantia">

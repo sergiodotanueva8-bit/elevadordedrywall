@@ -251,6 +251,13 @@
   min-width: 0;
 }
 
+.paso-envio-full__fila-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .paso-envio-full__titulo-opcion {
   font-weight: 800;
   font-size: 15px;
@@ -267,6 +274,25 @@
   font-weight: 700;
   color: var(--color-verde-oscuro);
   margin-top: 4px;
+}
+
+.badge-gratis {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  background: var(--color-verde-claro);
+  color: var(--color-verde-oscuro);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.badge-gratis--mini {
+  font-size: 10px;
+  padding: 2px 7px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
 .paso-envio-full__flecha {

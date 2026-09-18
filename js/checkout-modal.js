@@ -177,9 +177,9 @@ const CheckoutModal = (function () {
 
     const lineaEnvio = $("#resumen-linea-envio-texto");
     if (tipoEnvioActual === "lima") {
-      lineaEnvio.textContent = formatearMoneda(costoEnvio) + " (contraentrega)";
+      lineaEnvio.textContent = "Gratis (contraentrega)";
     } else {
-      lineaEnvio.textContent = "Pagas el flete en la agencia";
+      lineaEnvio.textContent = "Gratis (adelanto S/ 20 + diferencia al recoger)";
     }
 
     $("#resumen-total-valor").textContent = formatearMoneda(total);
@@ -276,7 +276,7 @@ const CheckoutModal = (function () {
       if (ubicacionMaps) {
         lineas.push("Ubicación GPS: " + ubicacionMaps);
       }
-      lineas.push("Delivery: " + formatearMoneda(resumen.costoEnvio));
+      lineas.push("Delivery: Gratis");
     } else {
       lineas.push("");
       lineas.push("🚚 *Envío a Provincia (Shalom)*");
@@ -286,7 +286,7 @@ const CheckoutModal = (function () {
       lineas.push("Departamento: " + datos.departamento);
       lineas.push("Ciudad/Destino: " + datos.ciudadDestino);
       lineas.push("Sede Shalom más cercana: " + datos.sedeShalom);
-      lineas.push("Flete: lo paga el cliente en la agencia Shalom al recoger");
+      lineas.push("Flete: Gratis (adelanto de S/ 20 por WhatsApp + diferencia al recoger en Shalom)");
     }
 
     lineas.push("");

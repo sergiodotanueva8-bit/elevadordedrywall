@@ -35,17 +35,19 @@ const CONFIG = {
   // Se vende de a una sola unidad, a precio único (sin descuento
   // por cantidad y sin variantes de color).
   PRODUCTO_NOMBRE: "Elevador de Paneles de Drywall",
-  PRECIO_REGULAR: 499.00,
+  PRECIO_REGULAR: 529.00,
   PRECIO_TACHADO: 650.00,
 
   // ----------------------------------------------------------
   // 3. COSTO DE DELIVERY (solo Lima)
   // ----------------------------------------------------------
-  // Los pedidos con envío a LIMA suman este costo de delivery al
-  // total (se cobra contraentrega, junto con el producto).
-  // Los pedidos a PROVINCIA NO suman nada aquí: el cliente paga el
-  // flete directamente en la agencia Shalom al recoger su envío.
-  COSTO_ENVIO_LIMA: 19.00,
+  // Envío GRATIS tanto a Lima como a Provincia.
+  // Los pedidos a LIMA no suman ningún costo de delivery (se paga
+  // contraentrega, junto con el producto, sin cargo extra).
+  // Los pedidos a PROVINCIA tampoco suman nada aquí: el flete de
+  // Shalom está incluido; solo se coordina un pequeño adelanto de
+  // S/ 20 por WhatsApp y la diferencia se paga al recoger.
+  COSTO_ENVIO_LIMA: 0.00,
 
   // ----------------------------------------------------------
   // 4. OPCIONES DEL CHECKOUT
