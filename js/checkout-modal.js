@@ -11,6 +11,23 @@
 
 const CheckoutModal = (function () {
 
+  // ----------------------------------------------------------
+  // Fix de altura real de viewport para mobile (Android/iOS y,
+  // sobre todo, navegadores DENTRO de apps como Facebook,
+  // Instagram, TikTok o WhatsApp, donde "100dvh" no siempre se
+  // ajusta bien al alto visible real). Guardamos el alto real en
+  // la variable CSS --vh-fix y la usamos como respaldo del modal.
+  // ----------------------------------------------------------
+  function actualizarAltoViewport() {
+    const alto = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh-fix", alto + "px");
+  }
+  actualizarAltoViewport();
+  window.addEventListener("resize", actualizarAltoViewport);
+  window.addEventListener("orientationchange", function () {
+    setTimeout(actualizarAltoViewport, 250);
+  });
+
   let tipoEnvioActual = "lima";
   let cantidadActual = 1;
   let enviando = false;
@@ -49,9 +66,13 @@ const CheckoutModal = (function () {
     document.body.style.overflow = "hidden";
 
     mostrarFormulario();
-    seleccionarTipoEnvio("lima");
+    // Siempre arrancamos pidiendo el destino (Lima/Provincia) en pantalla
+    // completa, ANTES de mostrar cualquier campo del formulario. Así
+    // evitamos que la gente llene datos sin fijarse a qué sección
+    // corresponden.
+    mostrarPaso1();
+    tipoEnvioActual = "lima"; // valor interno por defecto hasta que el cliente elija
     actualizarResumen();
-    prepararMapaEntrega();
 
     Pedidos.registrarEvento("abrir_modal_checkout", { cantidad: cantidadActual });
   }
@@ -71,6 +92,35 @@ const CheckoutModal = (function () {
   function mostrarExito() {
     $("#modal-checkout-formulario").style.display = "none";
     $("#modal-checkout-exito").classList.add("visible");
+  }
+
+  // ----------------------------------------------------------
+  // PASO 1 — pantalla completa para elegir Lima / Provincia
+  // ----------------------------------------------------------
+  // Se muestra sola (tapando header, campos y botón de confirmar)
+  // cada vez que se abre el modal. Recién después de tocar una de
+  // las dos opciones se revela el resto del formulario.
+  function mostrarPaso1() {
+    const paso1 = document.getElementById("modal-checkout-paso1");
+    const resto = document.getElementById("modal-checkout-resto");
+    if (paso1) paso1.style.display = "flex";
+    if (resto) resto.style.display = "none";
+  }
+
+  function elegirDestinoInicial(tipo) {
+    seleccionarTipoEnvio(tipo);
+
+    const paso1 = document.getElementById("modal-checkout-paso1");
+    const resto = document.getElementById("modal-checkout-resto");
+    if (paso1) paso1.style.display = "none";
+    if (resto) resto.style.display = "block";
+
+    // Volver a subir al tope del modal para que el cliente vea el
+    // formulario desde el principio (Nombre completo, etc.)
+    const contenedorModal = document.querySelector(".modal-checkout");
+    if (contenedorModal) contenedorModal.scrollTop = 0;
+
+    Pedidos.registrarEvento("elegir_destino_inicial", { tipo: tipo });
   }
 
   // ----------------------------------------------------------
@@ -101,11 +151,14 @@ const CheckoutModal = (function () {
   // Resumen del pedido (columna derecha del modal)
   // ----------------------------------------------------------
   function actualizarResumen() {
-    // Sin instalación ni color: el total es simplemente el precio único
-    // del producto (cantidad siempre 1).
+    // Sin instalación ni color: el total es el precio único del
+    // producto (cantidad siempre 1) más el costo de delivery cuando
+    // el envío es a Lima (a provincia no se le suma nada acá: ese
+    // flete se paga directo en la agencia al recoger el pedido).
     const precioUnitario = obtenerPrecioUnitarioPorCantidad(cantidadActual);
     const subtotalProducto = precioUnitario * cantidadActual;
-    const total = subtotalProducto;
+    const costoEnvio = tipoEnvioActual === "lima" ? (CONFIG.COSTO_ENVIO_LIMA || 0) : 0;
+    const total = subtotalProducto + costoEnvio;
 
     // Actualizar nombre del producto en la cabecera del resumen
     const nombreResumen = $("#resumen-producto-nombre");
@@ -123,11 +176,15 @@ const CheckoutModal = (function () {
     $("#resumen-linea-producto-precio").textContent = formatearMoneda(subtotalProducto);
 
     const lineaEnvio = $("#resumen-linea-envio-texto");
-    lineaEnvio.textContent = "Contraentrega";
+    if (tipoEnvioActual === "lima") {
+      lineaEnvio.textContent = formatearMoneda(costoEnvio) + " (contraentrega)";
+    } else {
+      lineaEnvio.textContent = "Pagas el flete en la agencia";
+    }
 
     $("#resumen-total-valor").textContent = formatearMoneda(total);
 
-    return { precioUnitario, subtotalProducto, total };
+    return { precioUnitario, subtotalProducto, costoEnvio, total };
   }
 
   // ----------------------------------------------------------
@@ -219,6 +276,7 @@ const CheckoutModal = (function () {
       if (ubicacionMaps) {
         lineas.push("Ubicación GPS: " + ubicacionMaps);
       }
+      lineas.push("Delivery: " + formatearMoneda(resumen.costoEnvio));
     } else {
       lineas.push("");
       lineas.push("🚚 *Envío a Provincia (Shalom)*");
@@ -228,6 +286,7 @@ const CheckoutModal = (function () {
       lineas.push("Departamento: " + datos.departamento);
       lineas.push("Ciudad/Destino: " + datos.ciudadDestino);
       lineas.push("Sede Shalom más cercana: " + datos.sedeShalom);
+      lineas.push("Flete: lo paga el cliente en la agencia Shalom al recoger");
     }
 
     lineas.push("");
@@ -342,10 +401,17 @@ const CheckoutModal = (function () {
       }
     });
 
-    // Tabs Lima / Provincia
+    // Tabs Lima / Provincia (dentro del formulario, para cambiar de opinión)
     $all(".selector-envio__opcion").forEach(function (boton) {
       boton.addEventListener("click", function () {
         seleccionarTipoEnvio(boton.getAttribute("data-tipo-envio"));
+      });
+    });
+
+    // Paso 1 en pantalla completa: primera elección de destino
+    $all("[data-paso1-tipo]").forEach(function (boton) {
+      boton.addEventListener("click", function () {
+        elegirDestinoInicial(boton.getAttribute("data-paso1-tipo"));
       });
     });
 

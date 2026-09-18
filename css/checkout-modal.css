@@ -19,11 +19,21 @@
 .modal-checkout {
   background: #fff;
   width: 100%;
+  /* Orden de fallback para que encaje bien tanto en Android como en
+     iOS, incluyendo navegadores dentro de apps (Facebook, Instagram,
+     TikTok, WhatsApp) que no siempre soportan 100dvh:
+     1) 100% del overlay (que ya mide el viewport real)
+     2) --vh-fix: alto real calculado por JS con window.innerHeight
+     3) 100dvh donde esté disponible (mejor opción cuando aplica) */
   height: 100%;
+  height: calc(var(--vh-fix, 1vh) * 100);
   height: 100dvh;
+  max-width: 100vw;
+  overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 18px 18px 28px;
+  padding: 18px 18px max(28px, env(safe-area-inset-bottom));
+  padding-top: max(18px, env(safe-area-inset-top));
   position: relative;
   animation: modal-aparecer-mobile 0.2s ease;
 }
@@ -183,12 +193,119 @@
   }
 }
 
+/* ============================================================
+   PASO 1 EN PANTALLA COMPLETA — Lima / Provincia
+   Se superpone a todo el formulario (header, campos, botón) hasta
+   que el cliente elige un destino. Así nadie llena datos sin fijarse
+   antes a qué sección corresponden.
+   ============================================================ */
+.paso-envio-full {
+  display: none; /* JS lo pone en "flex" al abrir el modal */
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  min-height: 62vh;
+  padding: 6px 2px 24px;
+}
+
+.paso-envio-full__titulo {
+  font-size: 19px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.paso-envio-full__subtitulo {
+  font-size: 13px;
+  color: var(--color-texto-secundario);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.paso-envio-full__opcion {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  padding: 18px 16px;
+  min-height: 76px;
+  text-align: left;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.paso-envio-full__opcion:active {
+  transform: scale(0.99);
+  background: var(--color-fondo-gris);
+}
+
+.paso-envio-full__icono {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.paso-envio-full__texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.paso-envio-full__titulo-opcion {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.paso-envio-full__subtitulo-opcion {
+  font-size: 12.5px;
+  color: var(--color-texto-secundario);
+  margin-top: 1px;
+}
+
+.paso-envio-full__precio {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-verde-oscuro);
+  margin-top: 4px;
+}
+
+.paso-envio-full__flecha {
+  font-size: 22px;
+  color: var(--color-texto-tenue);
+  flex-shrink: 0;
+}
+
+@media (min-width: 760px) {
+  .paso-envio-full {
+    min-height: 380px;
+    padding: 10px 8px 30px;
+  }
+  .paso-envio-full__opcion:hover {
+    border-color: var(--color-verde);
+    background: var(--color-verde-claro);
+  }
+}
+
+/* Mini selector Lima/Provincia dentro del formulario (para corregir
+   la elección hecha en el Paso 1, sin tener que cerrar el modal) */
+.selector-envio-mini {
+  margin-bottom: 22px;
+}
+
+.selector-envio-mini__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-texto-secundario);
+  margin-bottom: 8px;
+}
+
 /* Selector de envío: dos tarjetas grandes, fáciles de tocar */
 .selector-envio {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 0;
 }
 
 .selector-envio__opcion {

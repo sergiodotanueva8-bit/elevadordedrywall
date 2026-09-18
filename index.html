@@ -762,29 +762,55 @@
           </div>
         </div>
 
+        <!-- ===== PASO 1 — pantalla completa: elegir Lima o Provincia ANTES de mostrar cualquier campo ===== -->
+        <div id="modal-checkout-paso1" class="paso-envio-full">
+          <div class="paso-envio-full__titulo">¿A dónde enviamos tu pedido?</div>
+          <div class="paso-envio-full__subtitulo">Elige tu destino para continuar con tus datos</div>
+
+          <button class="paso-envio-full__opcion" data-paso1-tipo="lima" type="button">
+            <span class="paso-envio-full__icono">🚚</span>
+            <div class="paso-envio-full__texto">
+              <div class="paso-envio-full__titulo-opcion">Envío a LIMA</div>
+              <div class="paso-envio-full__subtitulo-opcion">Recibe en la puerta de tu casa</div>
+              <div class="paso-envio-full__precio">+ S/ 19.00 de delivery</div>
+            </div>
+            <span class="paso-envio-full__flecha">›</span>
+          </button>
+
+          <button class="paso-envio-full__opcion" data-paso1-tipo="provincia" type="button">
+            <span class="paso-envio-full__icono">📦</span>
+            <div class="paso-envio-full__texto">
+              <div class="paso-envio-full__titulo-opcion">Envío a PROVINCIA</div>
+              <div class="paso-envio-full__subtitulo-opcion">Envíos por Shalom</div>
+              <div class="paso-envio-full__precio">Pagas el flete en la agencia</div>
+            </div>
+            <span class="paso-envio-full__flecha">›</span>
+          </button>
+        </div>
+
+        <!-- ===== Resto del formulario: solo aparece DESPUÉS de elegir Lima/Provincia ===== -->
+        <div id="modal-checkout-resto">
         <div class="modal-checkout__grid">
           <!-- Columna izquierda: formulario -->
           <div>
-            <div class="modal-paso">
-              <span class="modal-paso__numero">1</span>
-              ¿A dónde enviamos tu pedido?
-            </div>
-
-            <div class="selector-envio">
-              <button class="selector-envio__opcion activa" data-tipo-envio="lima" type="button">
-                <span class="selector-envio__icono">🚚</span>
-                <div>
-                  <div class="selector-envio__titulo">Envío a LIMA</div>
-                  <div class="selector-envio__subtitulo">Recibe en la puerta de tu casa</div>
-                </div>
-              </button>
-              <button class="selector-envio__opcion" data-tipo-envio="provincia" type="button">
-                <span class="selector-envio__icono">📦</span>
-                <div>
-                  <div class="selector-envio__titulo">Envío a PROVINCIA</div>
-                  <div class="selector-envio__subtitulo">Envíos por Shalom</div>
-                </div>
-              </button>
+            <div class="selector-envio-mini">
+              <span class="selector-envio-mini__label">Destino:</span>
+              <div class="selector-envio">
+                <button class="selector-envio__opcion activa" data-tipo-envio="lima" type="button">
+                  <span class="selector-envio__icono">🚚</span>
+                  <div>
+                    <div class="selector-envio__titulo">Envío a LIMA</div>
+                    <div class="selector-envio__subtitulo">Recibe en la puerta de tu casa</div>
+                  </div>
+                </button>
+                <button class="selector-envio__opcion" data-tipo-envio="provincia" type="button">
+                  <span class="selector-envio__icono">📦</span>
+                  <div>
+                    <div class="selector-envio__titulo">Envío a PROVINCIA</div>
+                    <div class="selector-envio__subtitulo">Envíos por Shalom</div>
+                  </div>
+                </button>
+              </div>
             </div>
 
             <div class="modal-paso">
@@ -974,6 +1000,7 @@
         <div class="modal-checkout__privacidad">
           🔒 Tus datos están 100% seguros y protegidos.
         </div>
+        </div><!-- /#modal-checkout-resto -->
       </div>
 
       <!-- ---- Pantalla de éxito ---- -->

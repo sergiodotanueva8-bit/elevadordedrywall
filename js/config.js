@@ -39,7 +39,16 @@ const CONFIG = {
   PRECIO_TACHADO: 650.00,
 
   // ----------------------------------------------------------
-  // 3. OPCIONES DEL CHECKOUT
+  // 3. COSTO DE DELIVERY (solo Lima)
+  // ----------------------------------------------------------
+  // Los pedidos con envío a LIMA suman este costo de delivery al
+  // total (se cobra contraentrega, junto con el producto).
+  // Los pedidos a PROVINCIA NO suman nada aquí: el cliente paga el
+  // flete directamente en la agencia Shalom al recoger su envío.
+  COSTO_ENVIO_LIMA: 19.00,
+
+  // ----------------------------------------------------------
+  // 4. OPCIONES DEL CHECKOUT
   // ----------------------------------------------------------
   // Abrir WhatsApp automáticamente al confirmar el pedido.
   // El cliente siempre tiene que tocar "enviar" en WhatsApp: eso
@@ -49,7 +58,7 @@ const CONFIG = {
   ABRIR_WHATSAPP_AUTOMATICO: true,
 
   // ----------------------------------------------------------
-  // 4. ANALYTICS / TRACKING (opcional)
+  // 5. ANALYTICS / TRACKING (opcional)
   // ----------------------------------------------------------
   // Déjalos vacíos ("") si todavía no los usas.
   META_PIXEL_ID: "",
