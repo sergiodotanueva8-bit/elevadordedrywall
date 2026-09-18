@@ -1,0 +1,677 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   MEJORAS LANDING — estilos de las 4 secciones de prioridad alta.
+   Usa las variables de tu variables.css (naranja, verde, radios, sombras).
+   Mobile-first, igual que tu landing.css.
+   Enlazá este archivo en el <head> DESPUÉS de landing.css:
+     <link rel="stylesheet" href="css/mejoras_landing.css" />
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Títulos compartidos por las secciones nuevas */
+.mej-titulo {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-texto);
+  margin-top: 8px;
+}
+.mej-subtitulo {
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-texto-secundario);
+  margin: 6px auto 22px;
+  max-width: 560px;
+}
+
+/* ── BLOQUE 1: PROBLEMA → SOLUCIÓN ──────────────────────────────────────── */
+.mej-problema {
+  padding: var(--espacio-seccion) 0;
+  background: var(--color-fondo-gris);
+}
+.mej-problema__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.mej-problema__col {
+  background: #fff;
+  border-radius: var(--radio-lg);
+  padding: 18px 18px 20px;
+  box-shadow: var(--sombra-sm);
+  border: 1px solid var(--color-borde);
+}
+.mej-problema__col--solucion {
+  border-color: var(--color-verde);
+  box-shadow: 0 4px 14px rgba(29, 138, 74, 0.12);
+}
+.mej-problema__badge {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.mej-problema__badge--malo {
+  background: var(--color-rojo-claro);
+  color: var(--color-rojo);
+}
+.mej-problema__badge--bueno {
+  background: var(--color-verde-claro);
+  color: var(--color-verde-oscuro);
+}
+.mej-problema__col ul { display: flex; flex-direction: column; gap: 10px; }
+.mej-problema__col li { font-size: 14.5px; line-height: 1.45; }
+
+/* ── BLOQUE 2: COMPARATIVA ──────────────────────────────────────────────── */
+.mej-compara { padding: var(--espacio-seccion) 0; }
+.mej-compara__tabla {
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  box-shadow: var(--sombra-md);
+  border: 1px solid var(--color-borde);
+}
+.mej-compara__fila {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  align-items: center;
+}
+.mej-compara__fila:not(:last-child) { border-bottom: 1px solid var(--color-borde); }
+.mej-compara__celda {
+  padding: 13px 10px;
+  font-size: 13px;
+  text-align: center;
+}
+.mej-compara__celda--carac {
+  text-align: left;
+  font-weight: 700;
+  color: var(--color-texto);
+  background: var(--color-fondo-gris);
+}
+.mej-compara__celda--otros { color: var(--color-texto-tenue); }
+.mej-compara__celda--nuestro {
+  color: var(--color-verde-oscuro);
+  font-weight: 700;
+  background: var(--color-verde-claro);
+}
+.mej-compara__fila--head .mej-compara__celda {
+  font-weight: 800;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.mej-compara__fila--head .mej-compara__celda--nuestro { background: var(--color-verde); color: #fff; }
+.mej-compara__fila--head .mej-compara__celda--otros { color: var(--color-texto-secundario); }
+
+/* ── BLOQUE 3: RESEÑAS CON TEXTO ────────────────────────────────────────── */
+.mej-resenas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 900px;
+  margin: 10px auto 30px;
+}
+.mej-resena {
+  background: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  padding: 16px 18px;
+  box-shadow: var(--sombra-sm);
+}
+.mej-resena__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.mej-resena__estrellas { color: var(--color-amarillo-estrella); letter-spacing: 2px; font-size: 15px; }
+.mej-resena__verificado { font-size: 11.5px; color: var(--color-verde); font-weight: 600; }
+.mej-resena__texto { font-size: 14.5px; line-height: 1.5; color: var(--color-texto); }
+.mej-resena__autor { margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--color-texto-secundario); }
+
+/* ── BLOQUE 4: VIDEO ────────────────────────────────────────────────────── */
+.galeria__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  background: #000;
+}
+
+/* ── RESPONSIVE (tablet/desktop) ────────────────────────────────────────── */
+@media (min-width: 760px) {
+  .mej-titulo { font-size: 28px; }
+  .mej-problema__grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .mej-resenas { grid-template-columns: 1fr 1fr 1fr; }
+  .mej-compara__celda { font-size: 14.5px; padding: 15px 14px; }
+}
+/* ═══════════════════════════════════════════════════════════════════════════
+   SLIDER ANTES / DESPUÉS — estilos
+   Pegá esto al final de css/mejoras_landing.css (o en su propio archivo y
+   enlazalo en el <head>).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.mej-ba {
+  padding: var(--espacio-seccion) 0;
+  background: var(--color-fondo-gris);
+}
+
+.ba {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;            /* cuadrado; cambialo a 4/5 si tus fotos son verticales */
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  box-shadow: var(--sombra-lg);
+  user-select: none;
+  touch-action: pan-y;            /* permite scroll vertical de la página, pero captura el horizontal */
+  cursor: ew-resize;
+  background: #ddd;
+}
+
+.ba__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* La capa "antes" se recorta con clip-path según la posición del divisor */
+.ba__antes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  clip-path: inset(0 50% 0 0);   /* JS actualiza el 50% */
+}
+.ba__antes .ba__img { width: 100%; height: 100%; }
+
+/* Etiquetas ANTES / DESPUÉS */
+.ba__label {
+  position: absolute;
+  top: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  color: #fff;
+  z-index: 3;
+  pointer-events: none;
+}
+.ba__label--antes   { left: 12px;  background: rgba(224, 43, 43, 0.92); }
+.ba__label--despues { right: 12px; background: rgba(29, 138, 74, 0.92); }
+
+/* Barra divisoria vertical */
+.ba__divisor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;                      /* JS actualiza */
+  width: 3px;
+  background: #fff;
+  transform: translateX(-50%);
+  z-index: 4;
+  box-shadow: 0 0 8px rgba(0,0,0,0.35);
+}
+
+/* Tirador circular en el centro */
+.ba__tirador {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--sombra-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.ba__flecha {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-naranja);
+}
+
+/* Animación sutil de "pista" para invitar a arrastrar (solo al cargar) */
+@keyframes ba-hint {
+  0%, 100% { transform: translateX(-50%); }
+  50%      { transform: translateX(calc(-50% + 14px)); }
+}
+.ba--hint .ba__divisor {
+  animation: ba-hint 1.4s ease-in-out 2;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARRUSEL SOCIAL INFINITO (filas de clientes y envíos)
+   Movimiento con ANIMACIÓN CSS (siempre se mueve, suave y sin cortes).
+   El track tiene las imágenes duplicadas; se anima -50% para loop perfecto.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.carrusel-social {
+  overflow: hidden;              /* oculta lo que sale; NO usamos scroll */
+  margin: 10px 0 4px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.carrusel-social__track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Animaciones: una hacia la izquierda y otra hacia la derecha */
+@keyframes marquee-izq {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-der {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* La fila "izquierda" desplaza hacia la izquierda; la "derecha", hacia la derecha.
+   Duración alta = movimiento lento y elegante. Ajustá los segundos si querés. */
+.carrusel-social[data-dir="izquierda"] .carrusel-social__track {
+  animation: marquee-izq 40s linear infinite;
+}
+.carrusel-social[data-dir="derecha"] .carrusel-social__track {
+  animation: marquee-der 40s linear infinite;
+}
+
+/* Pausa al pasar el mouse (desktop) o al tocar (lo maneja el JS con .pausado) */
+.carrusel-social:hover .carrusel-social__track,
+.carrusel-social.pausado .carrusel-social__track {
+  animation-play-state: paused;
+}
+
+.carrusel-social__track img {
+  width: 150px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: var(--radio-lg);
+  flex: 0 0 auto;
+  box-shadow: var(--sombra-sm);
+  pointer-events: none;
+}
+
+@media (min-width: 760px) {
+  .carrusel-social__track img { width: 180px; height: 225px; }
+}
+
+/* Respeta a quienes prefieren menos movimiento (accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+  .carrusel-social__track { animation-duration: 120s; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SELECTOR DE COLOR (Negro / Blanco) debajo de la galería
+   ═══════════════════════════════════════════════════════════════════════════ */
+.selector-color {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 14px 0 4px;
+  flex-wrap: wrap;
+}
+.selector-color__label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-texto);
+  margin-right: 2px;
+}
+.selector-color__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 10px;
+  border: 2px solid var(--color-borde);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-texto);
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s, transform .05s;
+}
+.selector-color__btn:active { transform: scale(0.97); }
+.selector-color__btn.activo {
+  border-color: var(--color-naranja);
+  box-shadow: 0 0 0 3px rgba(244, 117, 15, 0.15);
+}
+.selector-color__muestra {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+  flex: 0 0 auto;
+}
+.selector-color__muestra--negro { background: #1a1a1a; }
+.selector-color__muestra--blanco { background: #ffffff; border-color: #bbb; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FAQ — acordeón
+   ═══════════════════════════════════════════════════════════════════════════ */
+.mej-faq { padding: var(--espacio-seccion) 0; background: var(--color-fondo-gris); }
+.mej-faq__lista { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+.mej-faq__item {
+  background: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  overflow: hidden;
+  box-shadow: var(--sombra-sm);
+}
+.mej-faq__item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 15px 44px 15px 16px;
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--color-texto);
+  position: relative;
+}
+.mej-faq__item summary::-webkit-details-marker { display: none; }
+.mej-faq__item summary::after {
+  content: "+";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-naranja);
+  transition: transform .2s;
+}
+.mej-faq__item[open] summary::after { content: "−"; }
+.mej-faq__resp {
+  padding: 0 16px 15px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-texto-secundario);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MEDIDAS DEL PRODUCTO (imagen)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.mej-medidas { padding: var(--espacio-seccion) 0; }
+
+/* Marco que recorta el zoom suave (efecto Ken Burns) */
+.mej-medidas__marco {
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: var(--radio-lg);
+  overflow: hidden;               /* recorta el excedente del zoom */
+  box-shadow: var(--sombra-md);
+}
+.mej-medidas__img {
+  display: block;
+  width: 100%;
+  border-radius: var(--radio-lg);
+  transform-origin: 60% 45%;      /* centra el zoom hacia el producto */
+  animation: kenburns 18s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.12); }
+}
+/* Respeta a quienes prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .mej-medidas__img { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MAPA DE ENTREGA (Leaflet) — checkout de Lima
+   ═══════════════════════════════════════════════════════════════════════════ */
+.mapa-entrega {
+  margin-top: 10px;
+  border: 0.5px solid var(--color-borde, #e2e2e2);
+  border-radius: var(--radio-md, 10px);
+  overflow: hidden;
+}
+.mapa-entrega__barra {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  background: var(--color-fondo-gris, #f5f6fa);
+}
+.mapa-entrega__buscar {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 0.5px solid var(--color-borde, #ddd);
+  border-radius: 8px;
+  font-size: 13.5px;
+}
+.mapa-entrega__btn-buscar {
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primario, #185FA5);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.mapa-entrega__resultados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fff;
+  border-bottom: 0.5px solid var(--color-borde, #e2e2e2);
+}
+.mapa-entrega__resultado {
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--color-texto, #1f2937);
+  border-bottom: 0.5px solid var(--color-borde, #eee);
+  cursor: pointer;
+}
+.mapa-entrega__resultado:hover,
+.mapa-entrega__resultado:active {
+  background: var(--color-fondo-gris, #f2f7fc);
+}
+.mapa-entrega__mapa {
+  width: 100%;
+  height: 240px;
+  background: #e8eaed;
+  z-index: 0;
+}
+.mapa-entrega__pie {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--color-fondo-gris, #f5f6fa);
+  flex-wrap: wrap;
+}
+.mapa-entrega__gps {
+  padding: 8px 12px;
+  border: 1.5px solid var(--color-primario, #185FA5);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-primario, #185FA5);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.mapa-entrega__confirmar {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-verde, #2E9E5B);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  flex: 0 0 auto;
+  opacity: 0.55;
+  transition: opacity .15s, transform .05s;
+}
+.mapa-entrega__confirmar--activo {
+  opacity: 1;
+  animation: latido-confirmar 1.2s ease-in-out infinite;
+}
+.mapa-entrega__confirmar:active { transform: scale(0.97); }
+@keyframes latido-confirmar {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46,158,91,0.45); }
+  50% { box-shadow: 0 0 0 6px rgba(46,158,91,0); }
+}
+.mapa-entrega__estado {
+  font-size: 12.5px;
+  color: var(--color-texto-secundario, #6B7280);
+  width: 100%;
+  margin-top: 2px;
+}
+.mapa-entrega__estado--ok {
+  color: var(--color-verde-oscuro, #0F6E56);
+  font-weight: 700;
+}
+.campo__ayuda {
+  display: block;
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--color-texto-secundario, #6B7280);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BARRA DE CONFIANZA (arriba de todo)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.trust-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 18px;
+  background: #111;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+}
+.trust-bar__item { white-space: nowrap; opacity: 0.92; }
+.trust-bar__item--destacado {
+  background: var(--color-naranja, #f4750f);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  opacity: 1;
+  box-shadow: 0 0 0 2px rgba(244,117,15,0.25);
+}
+@media (max-width: 480px) {
+  .trust-bar { gap: 5px 12px; font-size: 11.5px; padding: 7px 8px; }
+}
+
+/* Franja de logos cuando va justo debajo del producto */
+.franja-confianza--top { padding-top: 18px; padding-bottom: 8px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GARANTÍA SÓLIDA (sello 30 días + puntos de respaldo)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.mej-garantia {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #f0fbf5 0%, #ffffff 100%);
+  border: 1.5px solid var(--color-verde, #2E9E5B);
+  border-radius: var(--radio-lg, 14px);
+  padding: 16px 18px;
+  margin-top: 8px;
+  box-shadow: 0 4px 16px rgba(46, 158, 91, 0.12);
+}
+.mej-garantia__sello {
+  flex: 0 0 auto;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--color-verde, #2E9E5B);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 0 0 4px rgba(46,158,91,0.18);
+}
+.mej-garantia__sello-num {
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+.mej-garantia__sello-txt {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  margin-top: 3px;
+  line-height: 1.15;
+}
+.mej-garantia__titulo {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--color-texto, #1f2937);
+  margin-bottom: 8px;
+}
+.mej-garantia__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.mej-garantia__lista li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-texto-secundario, #4b5563);
+}
+.mej-garantia__lista li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-verde, #2E9E5B);
+  font-weight: 900;
+}
+@media (max-width: 400px) {
+  .mej-garantia { gap: 12px; padding: 14px; }
+  .mej-garantia__sello { width: 72px; height: 72px; }
+  .mej-garantia__sello-num { font-size: 26px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VIDEO DEL PRODUCTO (slide 0 de la galería)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.galeria__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  background: #000;
+  z-index: 5;
+}

@@ -1,0 +1,551 @@
+/**
+ * ============================================================
+ * MODAL DE CHECKOUT — Lima / Provincia
+ * ============================================================
+ * Controla la apertura/cierre del modal, el cambio entre las
+ * dos variantes de envío, las validaciones de campos, el cálculo
+ * del resumen de pedido, el guardado local y el envío del pedido
+ * final a WhatsApp con el mensaje armado.
+ * ============================================================
+ */
+
+const CheckoutModal = (function () {
+
+  let tipoEnvioActual = "lima";
+  let cantidadActual = 1;
+  let enviando = false;
+  let ultimoLinkWhatsapp = null;
+
+  // ----------------------------------------------------------
+  // Helpers de DOM
+  // ----------------------------------------------------------
+  function $(selector, contexto) {
+    return (contexto || document).querySelector(selector);
+  }
+  function $all(selector, contexto) {
+    return Array.from((contexto || document).querySelectorAll(selector));
+  }
+
+  function formatearMoneda(numero) {
+    return "S/ " + numero.toFixed(2);
+  }
+
+  // Sin color ni descuento por cantidad: el Elevador de Drywall se
+  // vende de a una unidad, a precio único (CONFIG.PRECIO_REGULAR).
+  function obtenerPrecioUnitarioPorCantidad(_cantidadIgnorada) {
+    return CONFIG.PRECIO_REGULAR;
+  }
+
+  // ----------------------------------------------------------
+  // Abrir / cerrar modal
+  // ----------------------------------------------------------
+  function abrir() {
+    // Se vende de a una sola unidad: cantidadActual siempre es 1.
+    cantidadActual = 1;
+    const overlay = document.getElementById("modal-checkout-overlay");
+    if (!overlay) return;
+
+    overlay.classList.add("abierto");
+    document.body.style.overflow = "hidden";
+
+    mostrarFormulario();
+    seleccionarTipoEnvio("lima");
+    actualizarResumen();
+    prepararMapaEntrega();
+
+    Pedidos.registrarEvento("abrir_modal_checkout", { cantidad: cantidadActual });
+  }
+
+  function cerrar() {
+    const overlay = document.getElementById("modal-checkout-overlay");
+    if (!overlay) return;
+    overlay.classList.remove("abierto");
+    document.body.style.overflow = "";
+  }
+
+  function mostrarFormulario() {
+    $("#modal-checkout-formulario").style.display = "block";
+    $("#modal-checkout-exito").classList.remove("visible");
+  }
+
+  function mostrarExito() {
+    $("#modal-checkout-formulario").style.display = "none";
+    $("#modal-checkout-exito").classList.add("visible");
+  }
+
+  // ----------------------------------------------------------
+  // Cambiar entre envío a Lima / Provincia
+  // ----------------------------------------------------------
+  function seleccionarTipoEnvio(tipo) {
+    tipoEnvioActual = tipo;
+
+    $all(".selector-envio__opcion").forEach(function (boton) {
+      boton.classList.toggle("activa", boton.getAttribute("data-tipo-envio") === tipo);
+    });
+
+    $all("[data-seccion-envio]").forEach(function (seccion) {
+      seccion.classList.toggle("activa", seccion.getAttribute("data-seccion-envio") === tipo);
+    });
+
+    $("#modal-checkout-titulo-paso2").textContent =
+      tipo === "lima" ? "Ingresa tus datos de entrega" : "Ingresa tus datos para envío a provincia";
+
+    actualizarResumen();
+    if (tipo === "lima") prepararMapaEntrega();
+
+    const nombreEvento = tipo === "lima" ? "seleccion_envio_lima" : "seleccion_envio_provincia";
+    Pedidos.registrarEvento(nombreEvento);
+  }
+
+  // ----------------------------------------------------------
+  // Resumen del pedido (columna derecha del modal)
+  // ----------------------------------------------------------
+  function actualizarResumen() {
+    // Sin instalación ni color: el total es simplemente el precio único
+    // del producto (cantidad siempre 1).
+    const precioUnitario = obtenerPrecioUnitarioPorCantidad(cantidadActual);
+    const subtotalProducto = precioUnitario * cantidadActual;
+    const total = subtotalProducto;
+
+    // Actualizar nombre del producto en la cabecera del resumen
+    const nombreResumen = $("#resumen-producto-nombre");
+    if (nombreResumen) {
+      nombreResumen.textContent = CONFIG.PRODUCTO_NOMBRE;
+    }
+
+    // Actualizar precio unitario grande (el que aparece destacado arriba del resumen)
+    const precioResumen = $("#resumen-producto-precio-unitario");
+    if (precioResumen) {
+      precioResumen.textContent = formatearMoneda(precioUnitario);
+    }
+
+    $("#resumen-linea-producto-cantidad").textContent = CONFIG.PRODUCTO_NOMBRE + " (1 unidad)";
+    $("#resumen-linea-producto-precio").textContent = formatearMoneda(subtotalProducto);
+
+    const lineaEnvio = $("#resumen-linea-envio-texto");
+    lineaEnvio.textContent = "Contraentrega";
+
+    $("#resumen-total-valor").textContent = formatearMoneda(total);
+
+    return { precioUnitario, subtotalProducto, total };
+  }
+
+  // ----------------------------------------------------------
+  // Validación de campos
+  // ----------------------------------------------------------
+  function marcarError(input, mensaje) {
+    input.classList.add("campo--error");
+    const errorEl = document.querySelector('[data-error-de="' + input.id + '"]');
+    if (errorEl) {
+      errorEl.textContent = mensaje;
+      errorEl.classList.add("visible");
+    }
+  }
+
+  function limpiarError(input) {
+    input.classList.remove("campo--error");
+    const errorEl = document.querySelector('[data-error-de="' + input.id + '"]');
+    if (errorEl) {
+      errorEl.classList.remove("visible");
+    }
+  }
+
+  function validarCampoRequerido(id, mensaje) {
+    const input = document.getElementById(id);
+    if (!input) return true;
+    const valor = input.value.trim();
+    if (!valor) {
+      marcarError(input, mensaje || "Este campo es obligatorio");
+      return false;
+    }
+    limpiarError(input);
+    return true;
+  }
+
+  function validarWhatsapp(id) {
+    const input = document.getElementById(id);
+    if (!input) return true;
+    const valor = input.value.trim().replace(/\s|-/g, "");
+    if (!/^[0-9]{9}$/.test(valor) && !/^[0-9]{9,12}$/.test(valor)) {
+      marcarError(input, "Ingresa un número de WhatsApp válido (9 dígitos)");
+      return false;
+    }
+    limpiarError(input);
+    return true;
+  }
+
+  function validarFormulario() {
+    let valido = true;
+
+    if (tipoEnvioActual === "lima") {
+      if (!validarCampoRequerido("campo-nombre-lima", "Ingresa tu nombre completo")) valido = false;
+      if (!validarWhatsapp("campo-whatsapp-lima")) valido = false;
+      if (!validarCampoRequerido("campo-distrito", "Ingresa tu distrito")) valido = false;
+      if (!validarCampoRequerido("campo-direccion", "Ingresa tu dirección exacta")) valido = false;
+    } else {
+      if (!validarCampoRequerido("campo-nombre-provincia", "Ingresa tu nombre completo")) valido = false;
+      if (!validarCampoRequerido("campo-dni", "Ingresa tu DNI")) valido = false;
+      if (!validarWhatsapp("campo-whatsapp-provincia")) valido = false;
+      if (!validarCampoRequerido("campo-departamento", "Selecciona tu departamento")) valido = false;
+      if (!validarCampoRequerido("campo-ciudad-destino", "Ingresa tu ciudad de destino")) valido = false;
+      if (!validarCampoRequerido("campo-sede-shalom", "Ingresa la sede de Shalom más cercana")) valido = false;
+    }
+
+    return valido;
+  }
+
+  // ----------------------------------------------------------
+  // MENSAJE PARA LA TIENDA
+  // ----------------------------------------------------------
+  // Este es el texto que se abre en WhatsApp del cliente pero
+  // dirigido al número de la TIENDA (CONFIG.WHATSAPP_NUMERO),
+  // con absolutamente todos los datos del pedido.
+  // ----------------------------------------------------------
+  function armarMensajePedidoParaTienda(datos, resumen, codigo) {
+    const lineas = [];
+    lineas.push("🛒 *NUEVO PEDIDO* — " + (CONFIG.TIENDA_NOMBRE || ""));
+    lineas.push("Código: *" + codigo + "*");
+    lineas.push("");
+    lineas.push("📦 *" + CONFIG.PRODUCTO_NOMBRE + "*");
+    lineas.push("Precio: " + formatearMoneda(resumen.precioUnitario));
+
+    if (tipoEnvioActual === "lima") {
+      lineas.push("");
+      lineas.push("📍 *Envío a Lima*");
+      lineas.push("Nombre: " + datos.nombreCompleto);
+      lineas.push("WhatsApp: " + datos.whatsapp);
+      lineas.push("Distrito: " + datos.distrito);
+      lineas.push("Dirección: " + datos.direccionExacta);
+      if (ubicacionMaps) {
+        lineas.push("Ubicación GPS: " + ubicacionMaps);
+      }
+    } else {
+      lineas.push("");
+      lineas.push("🚚 *Envío a Provincia (Shalom)*");
+      lineas.push("Nombre: " + datos.nombreCompleto);
+      lineas.push("DNI: " + datos.dni);
+      lineas.push("WhatsApp: " + datos.whatsapp);
+      lineas.push("Departamento: " + datos.departamento);
+      lineas.push("Ciudad/Destino: " + datos.ciudadDestino);
+      lineas.push("Sede Shalom más cercana: " + datos.sedeShalom);
+    }
+
+    lineas.push("");
+    lineas.push("💰 *Total a pagar: " + formatearMoneda(resumen.total) + "*");
+    lineas.push("Modalidad: Pago contra entrega");
+    lineas.push("");
+    lineas.push("Fecha: " + new Date().toLocaleString("es-PE"));
+
+    return lineas.join("\n");
+  }
+
+  // ----------------------------------------------------------
+  // Envío del formulario
+  // ----------------------------------------------------------
+  function confirmarPedido() {
+    if (enviando) return;
+
+    Pedidos.registrarEvento("click_confirmar_pedido", { tipo_envio: tipoEnvioActual });
+
+    if (!validarFormulario()) return;
+
+    enviando = true;
+    const boton = $("#btn-confirmar-pedido");
+    const textoOriginal = boton.innerHTML;
+    boton.disabled = true;
+    boton.innerHTML = '<span>Procesando tu pedido...</span>';
+
+    const resumen = actualizarResumen();
+
+    let datos;
+    if (tipoEnvioActual === "lima") {
+      datos = {
+        tipoEnvio: "lima",
+        nombreCompleto: $("#campo-nombre-lima").value.trim(),
+        whatsapp: $("#campo-whatsapp-lima").value.trim(),
+        distrito: $("#campo-distrito").value.trim(),
+        direccionExacta: $("#campo-direccion").value.trim(),
+      };
+    } else {
+      datos = {
+        tipoEnvio: "provincia",
+        nombreCompleto: $("#campo-nombre-provincia").value.trim(),
+        dni: $("#campo-dni").value.trim(),
+        whatsapp: $("#campo-whatsapp-provincia").value.trim(),
+        departamento: $("#campo-departamento").value,
+        ciudadDestino: $("#campo-ciudad-destino").value.trim(),
+        sedeShalom: $("#campo-sede-shalom").value.trim(),
+      };
+    }
+
+    datos.precioUnitario = resumen.precioUnitario;
+    datos.totalPagar = resumen.total;
+    datos.ubicacionMaps = (tipoEnvioActual === "lima") ? ubicacionMaps : null;
+
+    // 1) Guardamos el pedido localmente (respaldo en el navegador)
+    const registro = Pedidos.guardarPedido(datos);
+    const mensajeTienda = armarMensajePedidoParaTienda(datos, resumen, registro.codigo);
+    registro.mensaje_whatsapp = mensajeTienda;
+    ultimoLinkWhatsapp = Pedidos.construirLinkWhatsapp(mensajeTienda);
+
+    // 2) Preparamos el botón de respaldo de la pantalla de éxito
+    const btnExitoWsp = document.getElementById("btn-exito-whatsapp");
+    if (btnExitoWsp) btnExitoWsp.setAttribute("href", ultimoLinkWhatsapp);
+
+    const codigoExito = document.getElementById("exito-codigo-pedido");
+    if (codigoExito) codigoExito.textContent = registro.codigo;
+
+    // 3) Pixels de conversión
+    Pixels.identificarUsuario({ telefono: datos.whatsapp });
+    Pixels.dispararEvento("Purchase", "CompletePayment", {
+      content_id: registro.codigo,
+      content_name: CONFIG.PRODUCTO_NOMBRE,
+      value: resumen.total,
+      currency: "PEN",
+    });
+
+    // 4) Abrimos WhatsApp de la tienda con todos los datos del pedido.
+    //    Va dentro del mismo click para que el navegador no lo bloquee.
+    if (CONFIG.ABRIR_WHATSAPP_AUTOMATICO !== false) {
+      Pedidos.enviarPedidoAWhatsapp(mensajeTienda);
+    }
+
+    // 5) Pantalla de éxito
+    mostrarExito();
+
+    enviando = false;
+    boton.disabled = false;
+    boton.innerHTML = textoOriginal;
+  }
+
+  // ----------------------------------------------------------
+  // Inicialización de listeners (se llama una sola vez)
+  // ----------------------------------------------------------
+  function inicializar() {
+    const overlay = document.getElementById("modal-checkout-overlay");
+    if (!overlay) return;
+
+    // Cerrar con la X
+    $all("[data-cerrar-checkout]").forEach(function (el) {
+      el.addEventListener("click", cerrar);
+    });
+
+    // Cerrar al hacer click fuera del modal
+    overlay.addEventListener("click", function (evento) {
+      if (evento.target === overlay) cerrar();
+    });
+
+    // Cerrar con tecla Escape
+    document.addEventListener("keydown", function (evento) {
+      if (evento.key === "Escape" && overlay.classList.contains("abierto")) {
+        cerrar();
+      }
+    });
+
+    // Tabs Lima / Provincia
+    $all(".selector-envio__opcion").forEach(function (boton) {
+      boton.addEventListener("click", function () {
+        seleccionarTipoEnvio(boton.getAttribute("data-tipo-envio"));
+      });
+    });
+
+    // (El Elevador de Drywall no se instala, así que aquí ya no hay
+    // checkbox de instalación que sincronizar.)
+
+    // Botón confirmar
+    const botonConfirmar = document.getElementById("btn-confirmar-pedido");
+    if (botonConfirmar) {
+      botonConfirmar.addEventListener("click", function (evento) {
+        evento.preventDefault();
+        confirmarPedido();
+      });
+    }
+
+    // Quitar el error de un campo en cuanto el usuario empieza a corregirlo
+    $all(".campo input, .campo select").forEach(function (input) {
+      input.addEventListener("input", function () {
+        limpiarError(input);
+      });
+    });
+
+    // ---- Ubicación GPS (checkout de Lima) ----
+    inicializarUbicacionGPS();
+  }
+
+  // Guarda el link de Google Maps de la ubicación de entrega (o null)
+  let ubicacionMaps = null;
+  let mapaLeaflet = null;
+  let marcadorLeaflet = null;
+  const LIMA_CENTRO = [-12.0464, -77.0428];
+
+  // Link pendiente (pin movido pero NO confirmado todavía)
+  let ubicacionPendiente = null;
+
+  function actualizarUbicacionDesdeMarcador() {
+    if (!marcadorLeaflet) return;
+    const pos = marcadorLeaflet.getLatLng();
+    const lat = pos.lat.toFixed(6);
+    const lng = pos.lng.toFixed(6);
+    ubicacionPendiente = "https://www.google.com/maps?q=" + lat + "," + lng;
+    // Mover el pin "des-confirma": hay que confirmar de nuevo
+    ubicacionMaps = null;
+    const estado = document.getElementById("mapa-estado");
+    const btnConf = document.getElementById("btn-confirmar-ubicacion");
+    if (estado) {
+      estado.textContent = "Ubicación lista — tocá Confirmar";
+      estado.classList.remove("mapa-entrega__estado--ok");
+    }
+    if (btnConf) btnConf.classList.add("mapa-entrega__confirmar--activo");
+  }
+
+  function confirmarUbicacion() {
+    if (!ubicacionPendiente) {
+      const estado = document.getElementById("mapa-estado");
+      if (estado) estado.textContent = "Primero marcá un punto en el mapa";
+      return;
+    }
+    ubicacionMaps = ubicacionPendiente;
+    const estado = document.getElementById("mapa-estado");
+    const btnConf = document.getElementById("btn-confirmar-ubicacion");
+    if (estado) {
+      estado.textContent = "✓ Ubicación confirmada";
+      estado.classList.add("mapa-entrega__estado--ok");
+    }
+    if (btnConf) btnConf.classList.remove("mapa-entrega__confirmar--activo");
+    Pedidos.registrarEvento("ubicacion_confirmada");
+  }
+
+  function crearMapaEntrega() {
+    const cont = document.getElementById("mapa-leaflet");
+    if (!cont || mapaLeaflet || typeof L === "undefined") return;
+
+    mapaLeaflet = L.map(cont, { attributionControl: false }).setView(LIMA_CENTRO, 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(mapaLeaflet);
+
+    marcadorLeaflet = L.marker(LIMA_CENTRO, { draggable: true }).addTo(mapaLeaflet);
+    marcadorLeaflet.on("dragend", actualizarUbicacionDesdeMarcador);
+
+    // Tocar el mapa mueve el pin
+    mapaLeaflet.on("click", function (e) {
+      marcadorLeaflet.setLatLng(e.latlng);
+      actualizarUbicacionDesdeMarcador();
+    });
+  }
+
+  // Se llama al abrir el modal / entrar a Lima: crea el mapa y ajusta su tamaño
+  function prepararMapaEntrega() {
+    crearMapaEntrega();
+    if (mapaLeaflet) {
+      setTimeout(function () { mapaLeaflet.invalidateSize(); }, 200);
+    }
+  }
+
+  function seleccionarResultadoBusqueda(lat, lng) {
+    mapaLeaflet.setView([lat, lng], 17);
+    marcadorLeaflet.setLatLng([lat, lng]);
+    actualizarUbicacionDesdeMarcador();
+    const lista = document.getElementById("mapa-resultados");
+    if (lista) { lista.style.display = "none"; lista.innerHTML = ""; }
+
+    // Copiar lo que el cliente tecleó en el buscador al campo "Dirección exacta"
+    // SOLO si ese campo está vacío (para no pisar lo que ya haya escrito).
+    const inputBuscar = document.getElementById("mapa-buscar");
+    const campoDireccion = document.getElementById("campo-direccion");
+    if (campoDireccion && inputBuscar && !campoDireccion.value.trim()) {
+      campoDireccion.value = inputBuscar.value.trim();
+      limpiarError(campoDireccion);
+    }
+
+    const estado = document.getElementById("mapa-estado");
+    if (estado) estado.textContent = "Ahora ajustá el pin a tu puerta y tocá Confirmar";
+  }
+
+  function buscarDireccionEnMapa() {
+    const input = document.getElementById("mapa-buscar");
+    const lista = document.getElementById("mapa-resultados");
+    const estado = document.getElementById("mapa-estado");
+    if (!input || !input.value.trim() || !mapaLeaflet) return;
+
+    const q = encodeURIComponent(input.value.trim());
+    if (estado) estado.textContent = "Buscando...";
+
+    // Sesgo a Perú (countrycodes=pe) y priorizando Lima (viewbox),
+    // varios resultados (limit=6) y direcciones detalladas (addressdetails=1).
+    const viewboxLima = "&viewbox=-77.30,-11.70,-76.70,-12.40&bounded=0";
+    const url =
+      "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1" +
+      "&countrycodes=pe&limit=6" + viewboxLima + "&q=" + q;
+
+    fetch(url, { headers: { "Accept-Language": "es" } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!lista) return;
+        if (!data || data.length === 0) {
+          lista.style.display = "none";
+          lista.innerHTML = "";
+          if (estado) estado.textContent = "No aparece. Buscá solo la calle/distrito, o arrastrá el pin a mano.";
+          return;
+        }
+        lista.innerHTML = "";
+        data.forEach(function (item) {
+          const li = document.createElement("li");
+          li.className = "mapa-entrega__resultado";
+          li.textContent = item.display_name;
+          li.addEventListener("click", function () {
+            seleccionarResultadoBusqueda(parseFloat(item.lat), parseFloat(item.lon));
+          });
+          lista.appendChild(li);
+        });
+        lista.style.display = "block";
+        if (estado) estado.textContent = "Tocá la dirección correcta de la lista";
+      })
+      .catch(function () {
+        if (estado) estado.textContent = "No se pudo buscar";
+      });
+  }
+
+  function inicializarUbicacionGPS() {
+    const btnGps = document.getElementById("btn-ubicacion-gps");
+    const btnBuscar = document.getElementById("mapa-btn-buscar");
+    const inputBuscar = document.getElementById("mapa-buscar");
+    const estado = document.getElementById("mapa-estado");
+
+    if (btnGps) {
+      btnGps.addEventListener("click", function () {
+        if (!navigator.geolocation || !mapaLeaflet) return;
+        if (estado) estado.textContent = "Obteniendo tu ubicación...";
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            mapaLeaflet.setView([lat, lng], 16);
+            marcadorLeaflet.setLatLng([lat, lng]);
+            actualizarUbicacionDesdeMarcador();
+          },
+          function () {
+            if (estado) estado.textContent = "No se pudo obtener (permití el acceso)";
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      });
+    }
+
+    const btnConfirmar = document.getElementById("btn-confirmar-ubicacion");
+    if (btnConfirmar) btnConfirmar.addEventListener("click", confirmarUbicacion);
+
+    if (btnBuscar) btnBuscar.addEventListener("click", buscarDireccionEnMapa);
+    if (inputBuscar) {
+      inputBuscar.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { e.preventDefault(); buscarDireccionEnMapa(); }
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", inicializar);
+
+  return { abrir, cerrar };
+})();
+
+window.CheckoutModal = CheckoutModal;

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--
+    ⚠️ IMPORTANTE: estas etiquetas (title, description, og:*) son LEÍDAS
+    POR WHATSAPP/FACEBOOK/REDES directamente del HTML estático — esas
+    plataformas no ejecutan JavaScript, así que NO pueden generarse
+    dinámicamente desde config.js. Si cambias PRODUCTO_NOMBRE o la
+    descripción del producto en js/config.js, TIENES QUE actualizar
+    también estas líneas a mano para que coincidan.
+
+    Después de editar, si compartes el link y sigue saliendo la versión
+    vieja, es por caché de WhatsApp/Facebook — fuerza el refresh en:
+    https://developers.facebook.com/tools/debug/ (pega tu URL → "Scrape Again")
+  -->
+  <title>Elevador de Paneles de Drywall | Envío y Pago Contraentrega a Todo el Perú</title>
+  <meta name="description" content="Elevador de paneles de drywall, sube hasta 3.5 metros, soporta hasta 50kg. Pago contra entrega, envíos a todo el Perú. ¡Oferta por tiempo limitado!" />
+
+  <!-- Open Graph (para que se vea bien al compartir en redes / WhatsApp) -->
+  <meta property="og:title" content="Elevador de Paneles de Drywall" />
+  <meta property="og:description" content="Sube paneles de drywall al techo tú solo. Llega hasta 3.5 metros, soporta hasta 50kg. Envío y pago contraentrega a todo el Perú." />
+  <meta property="og:image" content="assets/images/producto-hero-principal.jpg" />
+  <meta property="og:type" content="product" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+  <link rel="stylesheet" href="css/checkout-modal.css" />
+  <link rel="stylesheet" href="css/mejoras_landing.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <!-- ===== BARRA DE CONFIANZA (arriba de todo) ===== -->
+  <div class="trust-bar">
+    <div class="trust-bar__item trust-bar__item--destacado">💰 PAGO CONTRA ENTREGA</div>
+    <div class="trust-bar__item">🚚 Envío y pago contraentrega a todo el Perú</div>
+    <div class="trust-bar__item">🔒 Compra 100% segura</div>
+  </div>
+
+  <!-- ============================================================
+       BARRA SUPERIOR DE CONFIANZA
+       ============================================================ -->
+  <div class="barra-confianza">
+    <div class="barra-confianza__ticker-wrap">
+      <div class="barra-confianza__ticker">
+        <span class="barra-confianza__item">🚚 Envíos rápidos a todo el Perú</span>
+        <span class="barra-confianza__sep">•</span>
+        <span class="barra-confianza__item">🛡️ Pago contra entrega</span>
+        <span class="barra-confianza__sep">•</span>
+        <span class="barra-confianza__item">✅ Garantía de 30 días</span>
+        <span class="barra-confianza__sep">•</span>
+        <span class="barra-confianza__item"><span class="barra-confianza__estrellas">★★★★★</span> +10,000 clientes satisfechos</span>
+        <span class="barra-confianza__sep">•</span>
+        <!-- Duplicado para loop continuo sin saltos -->
+        <span class="barra-confianza__item">🚚 Envíos rápidos a todo el Perú</span>
+        <span class="barra-confianza__sep">•</span>
+        <span class="barra-confianza__item">🛡️ Pago contra entrega</span>
+        <span class="barra-confianza__sep">•</span>
+        <span class="barra-confianza__item">✅ Garantía de 30 días</span>
+        <span class="barra-confianza__sep">•</span>
+        <span class="barra-confianza__item"><span class="barra-confianza__estrellas">★★★★★</span> +10,000 clientes satisfechos</span>
+        <span class="barra-confianza__sep">•</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECCIÓN PRODUCTO
+       ============================================================ -->
+  <main class="producto contenedor" id="seccion-producto">
+    <div class="producto__grid">
+
+      <!-- ---------------- GALERÍA ----------------
+           Mobile: carrusel horizontal deslizable (scroll-snap) con dots,
+           pensado para el gesto natural de "swipe" de TikTok/Instagram.
+           Desktop (≥900px): miniaturas verticales + imagen grande,
+           controladas por el mismo JS pero mostrando/ocultando con CSS.
+      -->
+      <section class="galeria" aria-label="Galería de imágenes del producto">
+        <div class="galeria__badges">
+          <span class="badge-oferta">🔥 OFERTA POR TIEMPO LIMITADO</span>
+          <span class="badge-envio">🚚 ENVÍO Y PAGO CONTRAENTREGA A TODO EL PERÚ</span>
+        </div>
+
+        <div class="galeria__principal-wrap">
+          <!-- Miniaturas laterales (solo visibles desktop) -->
+          <div class="galeria__miniaturas">
+            <button class="miniatura activa" data-indice="0" aria-label="Ver imagen 1">
+              <img src="assets/images/producto-negro-1.jpg" alt="Miniatura 1 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="1" aria-label="Ver imagen 2">
+              <img src="assets/images/producto-negro-2.jpg" alt="Miniatura 2 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="2" aria-label="Ver imagen 3">
+              <img src="assets/images/producto-negro-3.jpg" alt="Miniatura 3 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="3" aria-label="Ver imagen 4">
+              <img src="assets/images/producto-negro-4.jpg" alt="Miniatura 4 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="4" aria-label="Ver imagen 5">
+              <img src="assets/images/producto-negro-5.jpg" alt="Miniatura 5 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="5" aria-label="Ver imagen 6">
+              <img src="assets/images/producto-blanco-1.jpg" alt="Miniatura 6 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="6" aria-label="Ver imagen 7">
+              <img src="assets/images/producto-blanco-2.jpg" alt="Miniatura 7 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="7" aria-label="Ver imagen 8">
+              <img src="assets/images/producto-blanco-3.jpg" alt="Miniatura 8 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="8" aria-label="Ver imagen 9">
+              <img src="assets/images/producto-blanco-4.jpg" alt="Miniatura 9 - Elevador de Drywall" loading="lazy" />
+            </button>
+            <button class="miniatura" data-indice="9" aria-label="Ver imagen 10">
+              <img src="assets/images/producto-blanco-5.jpg" alt="Miniatura 10 - Elevador de Drywall" loading="lazy" />
+            </button>
+          </div>
+
+          <!-- Carrusel: cada slide ocupa el 100% del ancho en mobile -->
+          <div class="galeria__carrusel" id="galeria-carrusel">
+
+            <!--
+              SLIDE 1: producto-negro-1.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide galeria__slide--con-video" data-slide="0" id="slide-con-video">
+              <!--<div class="galeria__overlay-texto" data-overlay-video>
+                <h2>ELEVADOR DE PANELES<br />DE DRYWALL</h2>
+                <p>Sube tus planchas hasta 3.5 metros, tú solo.</p>
+              </div>-->
+              <div class="galeria__sello-peso" data-overlay-video>
+                SOPORTA HASTA<br /><strong>50</strong>KG
+              </div>
+              <img src="assets/images/producto-negro-1.jpg" alt="Elevador de Drywall - foto principal" id="video-poster-img" />
+              <button class="galeria__play" id="btn-play-video" aria-label="Reproducir video del producto">▶</button>
+              <!--
+                ============================================================
+                VIDEO DEL PRODUCTO — PENDIENTE DE SUBIR
+                ============================================================
+                Se eliminó el video del tendedero (era del producto anterior
+                y pesaba 23MB, demasiado para anuncios de TikTok).
+
+                Para activar el video del Elevador de Drywall:
+                  1) Sube tu archivo a: assets/videos/producto-video.mp4
+                  2) Medidas recomendadas: vertical 1080x1920 px (estilo
+                     TikTok/Reels) o 1080x1350 px (formato 4:5)
+                  3) Duración ideal: 15 a 30 segundos
+                  4) Peso: MENOS DE 8 MB (importante para que cargue rápido
+                     en anuncios de TikTok, que son 100% tráfico móvil)
+                  5) Formato: .mp4 (códec H.264)
+
+                Mientras no subas el archivo, esta sección simplemente
+                muestra la foto de fondo (poster) sin video: no rompe nada,
+                el botón de play solo no tendrá qué reproducir todavía.
+
+                Si el video pesa más de 8MB, comprímelo antes con:
+                  ffmpeg -i original.mp4 -vcodec libx264 -crf 28 assets/videos/producto-video.mp4
+              -->
+              <video id="video-producto" class="galeria__video" playsinline preload="none"
+                     poster="assets/images/producto-negro-1.jpg" style="display:none;">
+                <source src="assets/videos/producto-video.mp4" type="video/mp4" />
+                Tu navegador no soporta la reproducción de video.
+              </video>
+            </div>
+
+            <!--
+              SLIDE 2: producto-negro-2.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="1">
+              <img src="assets/images/producto-negro-2.jpg" alt="Elevador de Drywall - foto 2" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 3: producto-negro-3.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="2">
+              <img src="assets/images/producto-negro-3.jpg" alt="Elevador de Drywall - foto 3" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 4: producto-negro-4.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="3">
+              <img src="assets/images/producto-negro-4.jpg" alt="Elevador de Drywall - foto 4" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 5: producto-negro-5.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="4">
+              <img src="assets/images/producto-negro-5.jpg" alt="Elevador de Drywall - foto 5" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 6: producto-blanco-1.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="5">
+              <!--<div class="galeria__overlay-texto">
+                <h2>ELEVADOR DE PANELES<br />DE DRYWALL</h2>
+                <p>Sube tus planchas hasta 3.5 metros, tú solo.</p>
+              </div>-->
+              <div class="galeria__sello-peso">
+                SOPORTA HASTA<br /><strong>50</strong>KG
+              </div>
+              <img src="assets/images/producto-blanco-1.jpg" alt="Elevador de Drywall - foto 6" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 7: producto-blanco-2.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="6">
+              <img src="assets/images/producto-blanco-2.jpg" alt="Elevador de Drywall - foto 7" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 8: producto-blanco-3.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="7">
+              <img src="assets/images/producto-blanco-3.jpg" alt="Elevador de Drywall - foto 8" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 9: producto-blanco-4.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="8">
+              <img src="assets/images/producto-blanco-4.jpg" alt="Elevador de Drywall - foto 9" loading="lazy" />
+            </div>
+
+            <!--
+              SLIDE 10: producto-blanco-5.jpg
+              Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
+              Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
+            -->
+            <div class="galeria__slide" data-slide="9">
+              <img src="assets/images/producto-blanco-5.jpg" alt="Elevador de Drywall - foto 10" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Dots indicadores (solo mobile, reemplazan a las miniaturas) -->
+        <div class="galeria__dots" id="galeria-dots">
+          <button class="galeria__dot activo" data-indice="0" aria-label="Ir a imagen 1"></button>
+          <button class="galeria__dot" data-indice="1" aria-label="Ir a imagen 2"></button>
+          <button class="galeria__dot" data-indice="2" aria-label="Ir a imagen 3"></button>
+          <button class="galeria__dot" data-indice="3" aria-label="Ir a imagen 4"></button>
+          <button class="galeria__dot" data-indice="4" aria-label="Ir a imagen 5"></button>
+          <button class="galeria__dot" data-indice="5" aria-label="Ir a imagen 6"></button>
+          <button class="galeria__dot" data-indice="6" aria-label="Ir a imagen 7"></button>
+          <button class="galeria__dot" data-indice="7" aria-label="Ir a imagen 8"></button>
+          <button class="galeria__dot" data-indice="8" aria-label="Ir a imagen 9"></button>
+          <button class="galeria__dot" data-indice="9" aria-label="Ir a imagen 10"></button>
+        </div>
+
+        <!--
+          No hay selector de color: el Elevador de Drywall no tiene variantes.
+          (En la landing anterior aquí iba el selector Negro/Blanco del tendedero.)
+        -->
+
+        <!-- ================================================================
+             EDITAR AQUÍ: 4 características rápidas debajo de la galería.
+             Puedes cambiar el ícono (emoji), el título corto y el detalle.
+             ================================================================ -->
+        <div class="caracteristicas-rapidas">
+          <div class="caracteristica-rapida">
+            <div class="caracteristica-rapida__icono">📏</div>
+            <div class="caracteristica-rapida__titulo">3.5 METROS</div>
+            <div class="caracteristica-rapida__detalle">Altura máxima de elevación</div>
+          </div>
+          <div class="caracteristica-rapida">
+            <div class="caracteristica-rapida__icono">🔧</div>
+            <div class="caracteristica-rapida__titulo">BRAZOS AJUSTABLES</div>
+            <div class="caracteristica-rapida__detalle">Para distintas medidas de plancha</div>
+          </div>
+          <div class="caracteristica-rapida">
+            <div class="caracteristica-rapida__icono">🎯</div>
+            <div class="caracteristica-rapida__titulo">RUEDAS CON FRENO</div>
+            <div class="caracteristica-rapida__detalle">Máxima estabilidad al elevar</div>
+          </div>
+          <div class="caracteristica-rapida">
+            <div class="caracteristica-rapida__icono">⚙️</div>
+            <div class="caracteristica-rapida__titulo">HASTA 50 KG</div>
+            <div class="caracteristica-rapida__detalle">Capacidad de carga segura</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------- INFO DE COMPRA ---------------- -->
+      <section class="info-compra" aria-label="Información de compra">
+        <div class="info-compra__viendo">
+          <span class="punto-verde"></span>
+          <span data-personas-viendo>20 personas están viendo este producto</span>
+        </div>
+
+        <!-- EDITAR: nombre visible del producto en el título principal -->
+        <h1 class="info-compra__titulo">
+          ELEVADOR DE PANELES DE DRYWALL
+          <span class="info-compra__verificado">✔️</span>
+        </h1>
+
+        <div class="info-compra__resenas">
+          <span class="estrellas">★★★★★</span>
+          <strong>5.0</strong>
+          <span>(128 reseñas)</span>
+        </div>
+
+        <!-- EDITAR: lista de beneficios (ícono + texto) -->
+        <ul class="info-compra__beneficios">
+          <li><span class="info-compra__beneficio-icono">📏</span><span>Eleva planchas de drywall hasta 3.5 metros de alto</span></li>
+          <li>
+            <span class="info-compra__beneficio-icono">💪</span>
+            <span>
+              <span class="info-compra__beneficio-titulo">Malacate resistente</span>
+              <span class="info-compra__beneficio-sub">Sube la carga con control total, hasta 50 KG</span>
+            </span>
+          </li>
+          <li><span class="info-compra__beneficio-icono">🔧</span><span>Brazos ajustables para distintas medidas de plancha</span></li>
+          <li><span class="info-compra__beneficio-icono">🛞</span><span>Ruedas giratorias con freno para máxima estabilidad</span></li>
+          <li>
+            <span class="info-compra__beneficio-icono">📦</span>
+            <span>
+              <span class="info-compra__beneficio-titulo">Desarmable</span>
+              <span class="info-compra__beneficio-sub">Fácil de transportar y guardar entre obra y obra</span>
+            </span>
+          </li>
+        </ul>
+
+        <!-- EDITAR: chips de "incluye" (accesorios/partes del producto) -->
+        <div class="info-compra__incluye">
+          <div class="info-compra__incluye-titulo">Incluye todo lo necesario</div>
+          <div class="info-compra__incluye-chips">
+            <span class="chip-incluye">🧵 Cable de acero inoxidable de 5mm</span>
+            <span class="chip-incluye">⚙️ Malacate resistente</span>
+            <span class="chip-incluye">🛞 Ruedas giratorias con freno</span>
+            <span class="chip-incluye">🔧 Brazos ajustables</span>
+          </div>
+        </div>
+
+        <div class="alerta-stock">
+          <div class="alerta-stock__texto">
+            ⚠️ <span data-stock-texto>¡SOLO QUEDAN 26 UNIDADES!</span>
+          </div>
+          <div class="alerta-stock__barra-fondo">
+            <div class="alerta-stock__barra-relleno" data-stock-barra style="width: 80%;"></div>
+          </div>
+        </div>
+
+        <div class="info-compra__pills">
+          <span class="pill">🚚 Envío y Pago Contraentrega a todo el Perú</span>
+          <span class="pill pill--azul">💳 Pago al Recibir</span>
+        </div>
+
+        <!-- EDITAR: precio regular y precio tachado (debe coincidir con js/config.js) -->
+        <div class="precio-actual-wrap">
+          <span class="precio-actual">S/ 499.00</span>
+          <span class="precio-tachado">S/ 650.00</span>
+          <span class="badge-descuento">-23%</span>
+        </div>
+
+        <!--
+          Sin descuento por cantidad: el Elevador de Drywall se vende de a
+          una sola unidad, a precio único. Por eso ya no hay tarjetas de
+          "1 / 2 / 3 unidades" aquí (antes: bloque .opciones-cantidad).
+        -->
+
+        <!-- CTA principal -->
+        <button class="btn-cta-principal" data-abrir-checkout>
+          🛒 PEDIR Y PAGAR AL RECIBIR
+          <span class="btn-cta-principal__sub">Envío y Pago Contraentrega</span>
+        </button>
+
+        <div class="mej-garantia">
+          <div class="mej-garantia__sello">
+            <span class="mej-garantia__sello-num">30</span>
+            <span class="mej-garantia__sello-txt">DÍAS DE<br />GARANTÍA</span>
+          </div>
+          <div class="mej-garantia__info">
+            <div class="mej-garantia__titulo">🛡️ Compra 100% protegida</div>
+            <ul class="mej-garantia__lista">
+              <li>Si no quedás conforme, te devolvemos tu dinero</li>
+              <li>Pagás contra entrega: recién al recibir el producto</li>
+              <li>Producto original, tal cual las fotos</li>
+            </ul>
+          </div>
+        </div>
+<!-- ===== CONFIANZA: agencias de envío + métodos de pago (debajo del producto) ===== -->
+  <section class="franja-confianza franja-confianza--top">
+    <div class="contenedor">
+      <h3 class="seccion-titulo-centrado">ENVÍOS RÁPIDOS Y SEGUROS A TODO EL PERÚ</h3>
+
+      <!--
+        LOGOS DE COURIERS: dinsides.png, shalom.png, olva-courier.png, marvisur.png
+        Tamaño recomendado: 160x60 px cada uno (fondo transparente PNG)
+        Estos logos son de las empresas de courier; reemplázalos con
+        los logos reales otorgados por cada empresa o tus aliados logísticos.
+      -->
+      <div class="logos-fila">
+        <img src="assets/images/logo-courier-dinsides.png" alt="Dinsides Courier"  loading="lazy" />
+        <img src="assets/images/logo-courier-shalom.png" alt="Shalom"  loading="lazy" />
+        <img src="assets/images/logo-courier-olva.png" alt="Olva Courier"  loading="lazy" />
+        <img src="assets/images/logo-courier-marvisur.png" alt="Expreso Marvisur"  loading="lazy" />
+      </div>
+
+      <!--
+        LOGOS DE MÉTODOS DE PAGO: visa.png, mastercard.png, amex.png, yape.png,
+        plin.png, bcp.png, scotiabank.png, interbank.png, bbva.png
+        Tamaño recomendado: 100x40 px cada uno (fondo transparente PNG)
+        Puedes descargar los logos oficiales desde el sitio de marca de
+        cada entidad (la mayoría tiene "brand guidelines" públicas).
+      -->
+      <div class="logos-fila logos-fila--pagos">
+        <img src="assets/images/logo-pago-visa.png" alt="Visa"  loading="lazy" />
+        <img src="assets/images/logo-pago-mastercard.png" alt="Mastercard"  loading="lazy" />
+        <img src="assets/images/logo-pago-amex.png" alt="American Express"  loading="lazy" />
+        <img src="assets/images/logo-pago-yape.png" alt="Yape"  loading="lazy" />
+        <img src="assets/images/logo-pago-plin.png" alt="Plin"  loading="lazy" />
+        <img src="assets/images/logo-pago-bcp.png" alt="BCP"  loading="lazy" />
+        <img src="assets/images/logo-pago-scotiabank.png" alt="Scotiabank"  loading="lazy" />
+        <img src="assets/images/logo-pago-interbank.png" alt="Interbank"  loading="lazy" />
+        <img src="assets/images/logo-pago-bbva.png" alt="BBVA"  loading="lazy" />
+      </div>
+
+          </div>
+  </section>
+
+        <div class="tienda-lider">
+          <div class="tienda-lider__header">
+            <span>🏅</span>
+            <span class="tienda-lider__titulo">Tienda Líder Platinum</span>
+          </div>
+          <div class="tienda-lider__subtitulo">¡Uno de los mejores del sitio!</div>
+          <div class="tienda-lider__barra"></div>
+          <div class="tienda-lider__metricas">
+            <div>
+              <div class="tienda-lider__metrica-numero">3,240</div>
+              <div class="tienda-lider__metrica-texto">Ventas en los últimos 60 días</div>
+            </div>
+            <div>
+              <div class="tienda-lider__metrica-numero">👍</div>
+              <div class="tienda-lider__metrica-texto">Brindamos buen servicio</div>
+            </div>
+            <div>
+              <div class="tienda-lider__metrica-numero">📦</div>
+              <div class="tienda-lider__metrica-texto">Entregas rápidas y seguras</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!--
+      El Elevador de Drywall no requiere instalación, así que se eliminó
+      por completo la sección "Instalación en Lima" que tenía la landing
+      original (imagen de técnico + checkbox + chips + precio de S/50).
+    -->
+  </main>
+
+
+  <!-- ============================================================
+       SLIDER ANTES / DESPUÉS
+       EDITAR: reemplaza estas 2 imágenes por fotos del elevador
+       (mismo tamaño 1200x675 px y mismo ángulo entre las dos):
+         - antes-ropa-amontonada.jpg -> foto de "antes" (ej: 2 personas
+           cargando una plancha de drywall a pulso, con esfuerzo)
+         - despues-tendedero.jpg -> foto de "después" (la plancha ya
+           elevada y sostenida por el Elevador de Drywall)
+       ============================================================ -->
+  <section class="mej-ba">
+    <div class="contenedor">
+      <h3 class="mej-titulo">Mirá la diferencia en tu obra</h3>
+      <p class="mej-subtitulo">Desliza la barra para ver el antes y el después 👉</p>
+      <div class="ba" id="ba-slider">
+        <img class="ba__img ba__img--despues" src="assets/images/despues-tendedero.jpg" alt="Después: plancha de drywall elevada con el equipo" draggable="false" />
+        <div class="ba__antes" id="ba-antes">
+          <img class="ba__img" src="assets/images/antes-ropa-amontonada.jpg" alt="Antes: cargando la plancha de drywall a pulso, entre varias personas" draggable="false" />
+        </div>
+        <span class="ba__label ba__label--antes">ANTES</span>
+        <span class="ba__label ba__label--despues">DESPUÉS</span>
+        <div class="ba__divisor" id="ba-divisor">
+          <div class="ba__tirador"><span class="ba__flecha">‹</span><span class="ba__flecha">›</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+       ESPECIFICACIONES TÉCNICAS
+       ⚠️ EDITÁ los valores por los reales de tu producto.
+       ============================================================ -->
+  <section class="mej-medidas">
+    <div class="contenedor">
+      <h3 class="mej-titulo">Medidas del producto</h3>
+      <p class="mej-subtitulo">Todo lo que necesitás saber, de un vistazo.</p>
+      <!--
+        IMAGEN DE MEDIDAS — EDITAR: subí tu imagen con las medidas ya
+        marcadas del Elevador de Drywall (altura máxima 3.5m, capacidad
+        50kg, cable de 5mm, brazos ajustables, base con ruedas).
+        Archivo: assets/images/producto-medidas.jpg
+        Tamaño actual del archivo: 940x788 px. Sube tu imagen nueva con
+        esa misma medida (o ajusta el CSS si usas otra proporción).
+      -->
+      <div class="mej-medidas__marco">
+        <img class="mej-medidas__img"
+             src="assets/images/producto-medidas.jpg"
+             alt="Medidas del Elevador de Drywall: altura máxima 3.5 metros, capacidad de carga 50 kg, cable de acero de 5mm, brazos ajustables"
+             loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FRANJA DE CONFIANZA: envíos, métodos de pago, clientes
+       ============================================================ -->
+  <section class="franja-confianza">
+    <div class="contenedor">
+<h3 class="seccion-titulo-centrado">+10,000 CLIENTES FELICES EN TODO EL PERÚ</h3>
+
+      <!--
+        FOTOS DE CLIENTES (testimoniales): cliente-testimonio-1.jpg a cliente-testimonio-6.jpg
+        Tamaño recomendado: 300x330 px cada una (relación aprox. 1:1.1, vertical)
+        Formato: JPG, deben verse personas reales sosteniendo el paquete
+        recibido (idealmente con consentimiento/autorización del cliente).
+      -->
+      <div class="carrusel-social" data-carrusel data-dir="derecha">
+        <div class="carrusel-social__track">
+        <img src="assets/images/cliente-testimonio-1.jpg" alt="Cliente satisfecho 1" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-2.jpg" alt="Cliente satisfecho 2" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-3.jpg" alt="Cliente satisfecho 3" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-4.jpg" alt="Cliente satisfecho 4" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-5.jpg" alt="Cliente satisfecho 5" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-6.jpg" alt="Cliente satisfecho 6" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-7.jpg" alt="Cliente satisfecho 7" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-8.jpg" alt="Cliente satisfecho 8" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-9.jpg" alt="Cliente satisfecho 9" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-10.jpg" alt="Cliente satisfecho 10" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-1.jpg" aria-hidden="true" alt="Cliente satisfecho 1" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-2.jpg" aria-hidden="true" alt="Cliente satisfecho 2" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-3.jpg" aria-hidden="true" alt="Cliente satisfecho 3" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-4.jpg" aria-hidden="true" alt="Cliente satisfecho 4" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-5.jpg" aria-hidden="true" alt="Cliente satisfecho 5" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-6.jpg" aria-hidden="true" alt="Cliente satisfecho 6" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-7.jpg" aria-hidden="true" alt="Cliente satisfecho 7" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-8.jpg" aria-hidden="true" alt="Cliente satisfecho 8" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-9.jpg" aria-hidden="true" alt="Cliente satisfecho 9" loading="lazy" draggable="false" />
+        <img src="assets/images/cliente-testimonio-10.jpg" aria-hidden="true" alt="Cliente satisfecho 10" loading="lazy" draggable="false" />
+        </div>
+      </div>
+
+      <!-- Reseñas con texto -->
+      <div class="mej-resenas">
+        <div class="mej-resena">
+          <div class="mej-resena__top">
+            <span class="mej-resena__estrellas">★★★★★</span>
+            <span class="mej-resena__verificado">✔️ Compra verificada</span>
+          </div>
+          <p class="mej-resena__texto">"Llegó rapidísimo a Arequipa. Lo instalé sola en 15 minutos, aguanta un montón de ropa mojada sin problema. Súper recomendado."</p>
+          <div class="mej-resena__autor">— María G. · Arequipa</div>
+        </div>
+        <div class="mej-resena">
+          <div class="mej-resena__top">
+            <span class="mej-resena__estrellas">★★★★★</span>
+            <span class="mej-resena__verificado">✔️ Compra verificada</span>
+          </div>
+          <p class="mej-resena__texto">"Vivo en un depa chico y esto me salvó. Lo pliego y ni se nota. La calidad del acero se siente, no es como los de plástico de antes."</p>
+          <div class="mej-resena__autor">— Carlos M. · Lima, San Miguel</div>
+        </div>
+        <div class="mej-resena">
+          <div class="mej-resena__top">
+            <span class="mej-resena__estrellas">★★★★★</span>
+            <span class="mej-resena__verificado">✔️ Compra verificada</span>
+          </div>
+          <p class="mej-resena__texto">"Pagué al recibirlo, todo tal cual la foto. El técnico vino a instalarlo y quedó firme en la pared. Muy contenta con la compra."</p>
+          <div class="mej-resena__autor">— Rosa T. · Callao</div>
+        </div>
+      </div>
+
+      <h3 class="seccion-titulo-centrado" style="margin-top: 40px;">ENVÍOS GARANTIZADOS A TODO EL PERÚ</h3>
+
+      <!--
+        FOTOS DE ENVÍOS/PAQUETES: envio-paquete-1.jpg a envio-paquete-8.jpg
+        Tamaño recomendado: 200x200 px cada una (cuadrada)
+        Formato: JPG, fotos de paquetes empacados, camiones de reparto,
+        o evidencia de despacho (las que ya usas para mostrar logística real).
+      -->
+      <div class="carrusel-social" data-carrusel data-dir="izquierda">
+        <div class="carrusel-social__track">
+        <img src="assets/images/envio-paquete-1.jpg" alt="Envío 1" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-2.jpg" alt="Envío 2" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-3.jpg" alt="Envío 3" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-4.jpg" alt="Envío 4" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-5.jpg" alt="Envío 5" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-6.jpg" alt="Envío 6" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-7.jpg" alt="Envío 7" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-8.jpg" alt="Envío 8" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-9.jpg" alt="Envío 9" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-10.jpg" alt="Envío 10" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-11.jpg" alt="Envío 11" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-12.jpg" alt="Envío 12" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-1.jpg" aria-hidden="true" alt="Envío 1" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-2.jpg" aria-hidden="true" alt="Envío 2" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-3.jpg" aria-hidden="true" alt="Envío 3" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-4.jpg" aria-hidden="true" alt="Envío 4" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-5.jpg" aria-hidden="true" alt="Envío 5" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-6.jpg" aria-hidden="true" alt="Envío 6" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-7.jpg" aria-hidden="true" alt="Envío 7" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-8.jpg" aria-hidden="true" alt="Envío 8" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-9.jpg" aria-hidden="true" alt="Envío 9" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-10.jpg" aria-hidden="true" alt="Envío 10" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-11.jpg" aria-hidden="true" alt="Envío 11" loading="lazy" draggable="false" />
+        <img src="assets/images/envio-paquete-12.jpg" aria-hidden="true" alt="Envío 12" loading="lazy" draggable="false" />
+        </div>
+      </div>
+
+      <div class="beneficios-finales">
+        <div>
+          <div style="font-size:22px;">🚚</div>
+          <div class="beneficio-final__titulo">ENVÍOS A TODO EL PERÚ</div>
+          <div class="beneficio-final__texto">Llegamos a tu ciudad</div>
+        </div>
+        <div>
+          <div style="font-size:22px;">💰</div>
+          <div class="beneficio-final__titulo">PAGO CONTRA ENTREGA</div>
+          <div class="beneficio-final__texto">Paga cuando recibes tu pedido</div>
+        </div>
+        <div>
+          <div style="font-size:22px;">🛡️</div>
+          <div class="beneficio-final__titulo">SEGURO Y CONFIABLE</div>
+          <div class="beneficio-final__texto">Tu compra está protegida</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER DE MINI-BENEFICIOS (franja final oscura)
+       ============================================================ -->
+  <!-- ============================================================
+       FAQ — PREGUNTAS FRECUENTES  (⚠️ editá según tu operación)
+       ============================================================ -->
+  <!-- EDITAR: preguntas frecuentes según tu operación real -->
+  <section class="mej-faq">
+    <div class="contenedor">
+      <h3 class="mej-titulo">Preguntas frecuentes</h3>
+      <div class="mej-faq__lista">
+        <details class="mej-faq__item">
+          <summary>¿Cómo pago? ¿Es seguro?</summary>
+          <div class="mej-faq__resp">Pagas <strong>contra entrega</strong>: recién abonas cuando recibes el producto en tu casa si es en Lima, o en la agencia Shalom al momento del recojo si es en provincia. No pagas nada por adelantado.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿Cuánto demora el envío?</summary>
+          <div class="mej-faq__resp">En Lima te llega el mismo día o al día siguiente de haber realizado tu pedido. A provincia, entre 2 y 3 días hábiles vía Shalom. Te pasamos el seguimiento por WhatsApp.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿Qué medios de pago aceptan?</summary>
+          <div class="mej-faq__resp">Utilizamos <strong>todos los medios de pago</strong>: Yape, Plin, Transferencia (BCP, Interbank, BBVA, todos los bancos), Tarjeta de crédito con Izipay.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿El envío tiene costo?</summary>
+          <div class="mej-faq__resp">El envío es a <strong>todo el Perú, con pago contraentrega</strong>: pagas el producto (y el envío, si aplica) recién cuando lo recibes.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿Es difícil de armar?</summary>
+          <div class="mej-faq__resp">No. Es desarmable para que sea fácil de transportar y guardar, y se arma de vuelta en pocos minutos, sin herramientas complicadas.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿Cuánto peso soporta?</summary>
+          <div class="mej-faq__resp">Hasta <strong>50 KG</strong>, con un cable de acero inoxidable de 5mm de alta resistencia y un malacate para elevar con seguridad.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿Hasta qué altura eleva?</summary>
+          <div class="mej-faq__resp">Llega hasta <strong>3.5 metros de alto</strong>, ideal para trabajar techos. Sus brazos son ajustables para distintas medidas de plancha.</div>
+        </details>
+        <details class="mej-faq__item">
+          <summary>¿Tiene garantía?</summary>
+          <div class="mej-faq__resp">Sí, <strong>garantía de 30 días</strong>. Si no quedas conforme, te devolvemos tu dinero.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mini-beneficios-footer">
+    <div class="contenedor">
+      <div>
+        <div class="mini-beneficios-footer__item-titulo">🚚 ENVÍOS RÁPIDOS A TODO EL PERÚ</div>
+        <div class="mini-beneficios-footer__item-texto">A todo el Perú incluso provincia</div>
+      </div>
+      <div>
+        <div class="mini-beneficios-footer__item-titulo">💰 PAGO CONTRA ENTREGA</div>
+        <div class="mini-beneficios-footer__item-texto">Paga al recibir tu pedido</div>
+      </div>
+      <div>
+        <div class="mini-beneficios-footer__item-titulo">🛡️ GARANTÍA DE 30 DÍAS</div>
+        <div class="mini-beneficios-footer__item-texto">Si no estás feliz, te devolvemos tu dinero</div>
+      </div>
+      <div>
+        <div class="mini-beneficios-footer__item-titulo">🎧 ATENCIÓN PERSONALIZADA</div>
+        <div class="mini-beneficios-footer__item-texto">Te ayudamos por WhatsApp</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="espaciador-barra-fija"></div>
+
+  <!-- ============================================================
+       BARRA FIJA INFERIOR (aparece al hacer scroll)
+       ============================================================ -->
+  <div class="barra-fija-inferior" id="barra-fija-inferior">
+    <div class="contenedor">
+      <div class="barra-fija-inferior__producto">
+        <!-- EDITAR: mismo nombre/precio que arriba en la ficha del producto -->
+        <img src="assets/images/miniatura-1-logo.jpg" alt="Elevador de Paneles de Drywall"  loading="lazy" />
+        <div>
+          <div class="barra-fija-inferior__nombre" id="barra-fija-nombre">Elevador de Paneles de Drywall</div>
+          <div class="barra-fija-inferior__precio">
+            <strong id="barra-fija-precio">S/ 499.00</strong> <span class="precio-tachado">S/ 650.00</span>
+            <span class="badge-descuento" id="barra-fija-badge">-23%</span>
+          </div>
+        </div>
+      </div>
+      <span class="barra-fija-inferior__stock">🔥 <span data-stock-numero>12</span> unidades</span>
+      <button class="barra-fija-inferior__cta" data-abrir-checkout>
+        PEDIR Y PAGAR AL RECIBIR
+        <span>Envío y Pago Contraentrega</span>
+      </button>
+    </div>
+  </div>
+  <!-- ============================================================
+       MODAL DE CHECKOUT (Lima / Provincia)
+       ============================================================ -->
+  <div class="modal-overlay" id="modal-checkout-overlay">
+    <div class="modal-checkout" role="dialog" aria-modal="true" aria-labelledby="modal-checkout-titulo">
+      <button class="modal-checkout__cerrar" data-cerrar-checkout aria-label="Cerrar formulario">✕</button>
+
+      <!-- ---- Formulario ---- -->
+      <div id="modal-checkout-formulario">
+        <div class="modal-checkout__header">
+          <span class="modal-checkout__header-icono">✅</span>
+          <div>
+            <div class="modal-checkout__titulo" id="modal-checkout-titulo">Completa tus datos</div>
+            <div class="modal-checkout__subtitulo">Paga al recibir tu pedido</div>
+          </div>
+        </div>
+
+        <div class="modal-checkout__grid">
+          <!-- Columna izquierda: formulario -->
+          <div>
+            <div class="modal-paso">
+              <span class="modal-paso__numero">1</span>
+              ¿A dónde enviamos tu pedido?
+            </div>
+
+            <div class="selector-envio">
+              <button class="selector-envio__opcion activa" data-tipo-envio="lima" type="button">
+                <span class="selector-envio__icono">🚚</span>
+                <div>
+                  <div class="selector-envio__titulo">Envío a LIMA</div>
+                  <div class="selector-envio__subtitulo">Recibe en la puerta de tu casa</div>
+                </div>
+              </button>
+              <button class="selector-envio__opcion" data-tipo-envio="provincia" type="button">
+                <span class="selector-envio__icono">📦</span>
+                <div>
+                  <div class="selector-envio__titulo">Envío a PROVINCIA</div>
+                  <div class="selector-envio__subtitulo">Envíos por Shalom</div>
+                </div>
+              </button>
+            </div>
+
+            <div class="modal-paso">
+              <span class="modal-paso__numero">2</span>
+              <span id="modal-checkout-titulo-paso2">Ingresa tus datos de entrega</span>
+            </div>
+
+            <!-- ===== Campos: ENVÍO A LIMA ===== -->
+            <div data-seccion-envio="lima" class="activa">
+              <div class="campo">
+                <label for="campo-nombre-lima">Nombre completo</label>
+                <input type="text" id="campo-nombre-lima" placeholder="Ej: Juan Pérez" />
+                <span class="campo__error-texto" data-error-de="campo-nombre-lima"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-whatsapp-lima">WhatsApp</label>
+                <input type="tel" id="campo-whatsapp-lima" placeholder="Ej: 912 345 678" />
+                <span class="campo__error-texto" data-error-de="campo-whatsapp-lima"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-distrito">Distrito</label>
+                <input type="text" id="campo-distrito" placeholder="Ej: Los Olivos" />
+                <span class="campo__error-texto" data-error-de="campo-distrito"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-direccion">Dirección exacta</label>
+                <input type="text" id="campo-direccion" placeholder="Ej: Av. Los Próceres 123, Urb. Los Jardines" />
+                <span class="campo__error-texto" data-error-de="campo-direccion"></span>
+
+                <!-- Mapa de ubicación de entrega (opcional pero recomendado) -->
+                <div class="mapa-entrega">
+                  <div class="mapa-entrega__barra">
+                    <input type="text" id="mapa-buscar" class="mapa-entrega__buscar"
+                           placeholder="🔎 Buscá tu calle o distrito (ej: Risso, Lince)" />
+                    <button type="button" id="mapa-btn-buscar" class="mapa-entrega__btn-buscar">Buscar</button>
+                  </div>
+                  <ul id="mapa-resultados" class="mapa-entrega__resultados" style="display:none;"></ul>
+                  <div id="mapa-leaflet" class="mapa-entrega__mapa"></div>
+                  <div class="mapa-entrega__pie">
+                    <button type="button" id="btn-ubicacion-gps" class="mapa-entrega__gps">
+                      📍 Mi ubicación actual
+                    </button>
+                    <button type="button" id="btn-confirmar-ubicacion" class="mapa-entrega__confirmar">
+                      ✓ Confirmar ubicación
+                    </button>
+                  </div>
+                  <div id="mapa-estado" class="mapa-entrega__estado">📍 Arrastrá el pin justo a tu puerta y tocá Confirmar</div>
+                </div>
+                <span class="campo__ayuda">1) Buscá tu calle o distrito para acercarte. 2) Arrastrá el pin al número exacto de tu puerta. El número de casa lo escribís arriba en “Dirección exacta”.</span>
+              </div>
+
+              <!--
+                El Elevador de Drywall no requiere instalación, así que se
+                quitó el checkbox "¿Deseas agregar instalación?" y el aviso
+                del técnico instalador que tenía la landing original.
+              -->
+            </div>
+
+            <!-- ===== Campos: ENVÍO A PROVINCIA ===== -->
+            <div data-seccion-envio="provincia">
+              <div class="campo">
+                <label for="campo-nombre-provincia">Nombre completo</label>
+                <input type="text" id="campo-nombre-provincia" placeholder="Ej: Juan Pérez" />
+                <span class="campo__error-texto" data-error-de="campo-nombre-provincia"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-dni">DNI</label>
+                <input type="text" id="campo-dni" placeholder="Ej: 12345678" inputmode="numeric" maxlength="8" />
+                <span class="campo__error-texto" data-error-de="campo-dni"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-whatsapp-provincia">WhatsApp</label>
+                <input type="tel" id="campo-whatsapp-provincia" placeholder="Ej: 912 345 678" />
+                <span class="campo__error-texto" data-error-de="campo-whatsapp-provincia"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-departamento">Departamento</label>
+                <select id="campo-departamento">
+                  <option value="">Ej: Arequipa</option>
+                  <option>Amazonas</option>
+                  <option>Áncash</option>
+                  <option>Apurímac</option>
+                  <option>Arequipa</option>
+                  <option>Ayacucho</option>
+                  <option>Cajamarca</option>
+                  <option>Cusco</option>
+                  <option>Huancavelica</option>
+                  <option>Huánuco</option>
+                  <option>Ica</option>
+                  <option>Junín</option>
+                  <option>La Libertad</option>
+                  <option>Lambayeque</option>
+                  <option>Loreto</option>
+                  <option>Madre de Dios</option>
+                  <option>Moquegua</option>
+                  <option>Pasco</option>
+                  <option>Piura</option>
+                  <option>Puno</option>
+                  <option>San Martín</option>
+                  <option>Tacna</option>
+                  <option>Tumbes</option>
+                  <option>Ucayali</option>
+                </select>
+                <span class="campo__error-texto" data-error-de="campo-departamento"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-ciudad-destino">Ciudad / Destino</label>
+                <input type="text" id="campo-ciudad-destino" placeholder="Ej: Arequipa, Cusco, Trujillo" />
+                <span class="campo__error-texto" data-error-de="campo-ciudad-destino"></span>
+              </div>
+              <div class="campo">
+                <label for="campo-sede-shalom">Sede de Shalom más cercana a tu domicilio</label>
+                <input type="text" id="campo-sede-shalom" placeholder="Ej: Shalom Arequipa, Shalom Cusco, Shalom Trujillo" />
+                <span class="campo__error-texto" data-error-de="campo-sede-shalom"></span>
+              </div>
+
+              <div class="aviso-shalom">
+                <span class="aviso-shalom__icono">ℹ️</span>
+                <div>
+                  <div class="aviso-shalom__titulo">Tu pedido será enviado por Shalom.</div>
+                  <div class="aviso-shalom__texto">Indica la sede de Shalom más cercana a tu domicilio para coordinar la entrega.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna derecha: resumen -->
+          <div class="resumen-pedido">
+            <!--
+              IMAGEN — EDITAR: 400x300 px (relación 4:3). Puede ser la
+              misma imagen del hero, recortada a 4:3.
+            -->
+            <img src="assets/images/producto-hero-principal.jpg" alt="Elevador de Paneles de Drywall" class="resumen-pedido__producto-img"  loading="lazy" />
+            <div class="resumen-pedido__nombre" id="resumen-producto-nombre">Elevador de Paneles de Drywall</div>
+            <div class="resumen-pedido__precio" id="resumen-producto-precio-unitario">S/ 499.00</div>
+
+            <div class="resumen-pedido__titulo">Resumen de tu pedido</div>
+            <div class="resumen-pedido__linea">
+              <span id="resumen-linea-producto-cantidad">Elevador de Paneles de Drywall (1 unidad)</span>
+              <span id="resumen-linea-producto-precio">S/ 499.00</span>
+            </div>
+            <!--
+              Sin línea de "Color" (no aplica) ni de "Instalación"
+              (el producto no se instala) — se quitaron ambas del resumen.
+            -->
+            <div class="resumen-pedido__linea">
+              <span>Envío</span>
+              <span id="resumen-linea-envio-texto">Contraentrega</span>
+            </div>
+
+            <div class="resumen-pedido__total">
+              <span class="resumen-pedido__total-label">Total a pagar</span>
+              <span class="resumen-pedido__total-valor" id="resumen-total-valor">S/ 89.00</span>
+            </div>
+
+            <div class="resumen-pedido__garantias">
+              <div class="resumen-pedido__garantia">
+                <span class="resumen-pedido__garantia-icono">💳</span>
+                <div>
+                  <span class="resumen-pedido__garantia-titulo">Pago contra entrega</span>
+                  <span class="resumen-pedido__garantia-texto">Paga cuando recibas tu pedido</span>
+                </div>
+              </div>
+              <div class="resumen-pedido__garantia">
+                <span class="resumen-pedido__garantia-icono">🚚</span>
+                <div>
+                  <span class="resumen-pedido__garantia-titulo">Envío a todo el Perú</span>
+                  <span class="resumen-pedido__garantia-texto">Pago contraentrega, rápido y seguro</span>
+                </div>
+              </div>
+              <div class="resumen-pedido__garantia">
+                <span class="resumen-pedido__garantia-icono">✅</span>
+                <div>
+                  <span class="resumen-pedido__garantia-titulo">Garantía de satisfacción</span>
+                  <span class="resumen-pedido__garantia-texto">Si no estás feliz, te devolvemos tu dinero</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-confirmar-pedido" id="btn-confirmar-pedido">
+          <span>✅ CONFIRMAR PEDIDO</span>
+          <span class="btn-confirmar-pedido__sub">Te contactaremos para coordinar la entrega</span>
+        </button>
+
+        <div class="modal-checkout__privacidad">
+          🔒 Tus datos están 100% seguros y protegidos.
+        </div>
+      </div>
+
+      <!-- ---- Pantalla de éxito ---- -->
+      <div class="modal-checkout__exito" id="modal-checkout-exito">
+        <div class="modal-checkout__exito-icono">✓</div>
+        <div class="modal-checkout__exito-titulo">¡Pedido confirmado!</div>
+        <div class="modal-checkout__exito-texto">
+          Tu código de pedido es <strong id="exito-codigo-pedido">—</strong>.<br />
+          Se abrió WhatsApp con todos tus datos: solo tienes que <strong>presionar enviar</strong> para que nos llegue.
+          Si no se abrió solo, usa el botón verde de aquí abajo.
+        </div>
+        <a href="#" id="btn-exito-whatsapp" target="_blank" rel="noopener" class="modal-checkout__exito-whatsapp">
+          Enviar mi pedido por WhatsApp
+        </a>
+        <button type="button" class="modal-checkout__exito-cerrar" data-cerrar-checkout>Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="js/config.js"></script>
+  <script src="js/pedidos.js"></script>
+  <script src="js/pixels.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/checkout-modal.js"></script>
+  <script src="js/landing.js"></script>
+  <script src="js/antes-despues.js"></script>
+  <script src="js/carrusel-clientes.js"></script>
+</body>
+</html>

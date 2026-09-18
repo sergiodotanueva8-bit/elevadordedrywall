@@ -1,0 +1,37 @@
+ESPECIFICACIONES DEL VIDEO DEL PRODUCTO
+========================================
+Elevador de Paneles de Drywall
+
+Archivo esperado: producto-video.mp4
+Ubicación: assets/videos/producto-video.mp4
+
+RESOLUCIÓN RECOMENDADA:
+- Vertical (estilo TikTok/Reels): 1080 x 1920 px
+- O vertical 4:5 (estilo feed de Instagram/Facebook): 1080 x 1350 px
+
+DURACIÓN IDEAL:
+- 15 a 30 segundos (suficiente para mostrar armado + uso)
+
+PESO IDEAL:
+- MENOS DE 8 MB, para que cargue rápido en anuncios de TikTok
+  (tráfico 100% móvil, muchas veces con conexión débil)
+- Si pesa más, comprímelo con HandBrake o con ffmpeg:
+  ffmpeg -i original.mp4 -vcodec libx264 -crf 28 producto-video.mp4
+
+FORMATO:
+- .mp4 (códec H.264), compatible con todos los navegadores y celulares
+
+CONTENIDO SUGERIDO:
+- 0-5s: Mostrar el elevador desarmado/guardado (destaca lo compacto)
+- 5-15s: Mostrar cómo se arma y se posiciona
+- 15-25s: Mostrar cómo eleva una plancha de drywall hasta el techo
+- 25-30s: Cierre con la plancha ya sostenida en su lugar
+
+CÓMO ACTIVARLO EN LA LANDING:
+1. Coloca tu archivo en assets/videos/producto-video.mp4
+   (el <video> en index.html ya está listo y apunta a esa ruta)
+2. Mientras no subas el archivo, la landing funciona igual: solo
+   se ve la foto de fondo (poster) sin reproducir video.
+3. Opcional: si prefieres usar un video de YouTube en vez de un
+   archivo propio, puedes reemplazar el botón de play por un
+   <iframe> embebido de YouTube.
