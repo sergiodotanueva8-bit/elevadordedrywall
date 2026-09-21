@@ -64,6 +64,6 @@ const CONFIG = {
   // ----------------------------------------------------------
   // Déjalos vacíos ("") si todavía no los usas.
   META_PIXEL_ID: "",
-  TIKTOK_PIXEL_ID: "",
+  TIKTOK_PIXEL_ID: "D97EJ73C77U29TKO6ETG",
 
 };
