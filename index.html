@@ -130,44 +130,17 @@
               Tamaño recomendado: 1200x1500 px (relación 4:5, vertical)
               Formato: JPG optimizado para web (calidad 80-85%), peso ideal < 300KB
             -->
-            <div class="galeria__slide galeria__slide--con-video" data-slide="0" id="slide-con-video">
-              <!--<div class="galeria__overlay-texto" data-overlay-video>
-                <h2>ELEVADOR DE PANELES<br />DE DRYWALL</h2>
-                <p>Sube tus planchas hasta 3.5 metros, tú solo.</p>
-              </div>-->
-              <div class="galeria__sello-peso" data-overlay-video>
+            <!--
+              El video del producto YA NO va aquí (al inicio de la galería).
+              Ahora se muestra más abajo, en la sección "CLIENTES FELICES",
+              en formato autoplay silencioso (ver sección franja-confianza).
+              Este slide 1 vuelve a ser una foto normal, igual que el resto.
+            -->
+            <div class="galeria__slide" data-slide="0">
+              <div class="galeria__sello-peso">
                 SOPORTA HASTA<br /><strong>70</strong>KG
               </div>
-              <img src="assets/images/producto-negro-1.jpg" alt="Elevador de Drywall - foto principal" id="video-poster-img" />
-              <button class="galeria__play" id="btn-play-video" aria-label="Reproducir video del producto">▶</button>
-              <!--
-                ============================================================
-                VIDEO DEL PRODUCTO — PENDIENTE DE SUBIR
-                ============================================================
-                Se eliminó el video del tendedero (era del producto anterior
-                y pesaba 23MB, demasiado para anuncios de TikTok).
-
-                Para activar el video del Elevador de Drywall:
-                  1) Sube tu archivo a: assets/videos/producto-video.mp4
-                  2) Medidas recomendadas: vertical 1080x1920 px (estilo
-                     TikTok/Reels) o 1080x1350 px (formato 4:5)
-                  3) Duración ideal: 15 a 30 segundos
-                  4) Peso: MENOS DE 8 MB (importante para que cargue rápido
-                     en anuncios de TikTok, que son 100% tráfico móvil)
-                  5) Formato: .mp4 (códec H.264)
-
-                Mientras no subas el archivo, esta sección simplemente
-                muestra la foto de fondo (poster) sin video: no rompe nada,
-                el botón de play solo no tendrá qué reproducir todavía.
-
-                Si el video pesa más de 8MB, comprímelo antes con:
-                  ffmpeg -i original.mp4 -vcodec libx264 -crf 28 assets/videos/producto-video.mp4
-              -->
-              <video id="video-producto" class="galeria__video" playsinline preload="none"
-                     poster="assets/images/producto-negro-1.jpg" style="display:none;">
-                <source src="assets/videos/producto-video.mp4" type="video/mp4" />
-                Tu navegador no soporta la reproducción de video.
-              </video>
+              <img src="assets/images/producto-negro-1.jpg" alt="Elevador de Drywall - foto principal" />
             </div>
 
             <!--
@@ -514,10 +487,6 @@
       </div>
     </div>
   </section>
-
-       ESPECIFICACIONES TÉCNICAS
-       ⚠️ EDITÁ los valores por los reales de tu producto.
-       ============================================================ -->
   <section class="mej-medidas">
     <div class="contenedor">
       <h3 class="mej-titulo">Medidas del producto</h3>
@@ -533,7 +502,7 @@
       <div class="mej-medidas__marco">
         <img class="mej-medidas__img"
              src="assets/images/producto-medidas.jpg"
-             alt="Medidas del Elevador de Drywall: altura máxima 3.5 metros, capacidad de carga 50 kg, cable de acero de 5mm, brazos ajustables"
+             alt="Medidas del Elevador de Drywall: altura máxima 3.5 metros, capacidad de carga 70 kg, cable de acero de 5mm, brazos ajustables"
              loading="lazy" />
       </div>
     </div>
@@ -544,14 +513,17 @@
        ============================================================ -->
   <section class="franja-confianza">
     <div class="contenedor">
-<h3 class="seccion-titulo-centrado">+10,000 CLIENTES FELICES EN TODO EL PERÚ</h3>
+<h3 class="seccion-titulo-centrado">+1,000 CLIENTES FELICES EN TODO EL PERÚ</h3>
 
       <!--
-        FOTOS DE CLIENTES (testimoniales): cliente-testimonio-1.jpg a cliente-testimonio-6.jpg
-        Tamaño recomendado: 300x330 px cada una (relación aprox. 1:1.1, vertical)
-        Formato: JPG, deben verse personas reales sosteniendo el paquete
-        recibido (idealmente con consentimiento/autorización del cliente).
-      -->
+        ============================================================
+        SECCIÓN COMENTADA: carrusel de fotos de clientes (testimoniales)
+        ============================================================
+        Se reemplazó por el video del producto (autoplay en silencio,
+        justo debajo). Si en algún momento quieres volver a mostrar
+        las fotos de clientes en vez del video, descomenta este bloque
+        y comenta/elimina el bloque "VIDEO DE CLIENTES" que sigue.
+
       <div class="carrusel-social" data-carrusel data-dir="derecha">
         <div class="carrusel-social__track">
         <img src="assets/images/cliente-testimonio-1.jpg" alt="Cliente satisfecho 1" loading="lazy" draggable="false" />
@@ -575,6 +547,32 @@
         <img src="assets/images/cliente-testimonio-9.jpg" aria-hidden="true" alt="Cliente satisfecho 9" loading="lazy" draggable="false" />
         <img src="assets/images/cliente-testimonio-10.jpg" aria-hidden="true" alt="Cliente satisfecho 10" loading="lazy" draggable="false" />
         </div>
+      </div>
+      -->
+
+      <!--
+        ============================================================
+        VIDEO DE CLIENTES — autoplay en silencio (sin sonido inicial)
+        ============================================================
+        Se reproduce solo, en loop, sin sonido apenas carga la página
+        (así lo permiten todos los navegadores). El usuario decide si
+        quiere activar el sonido tocando el botón 🔇/🔊.
+
+        Para cambiar el video: reemplaza el archivo en
+        assets/videos/producto-video.mp4 (mismas recomendaciones que
+        antes: vertical, menos de 8MB, formato mp4/H.264).
+      -->
+      <div class="video-clientes-wrap">
+        <video id="video-testimonio-clientes" class="video-clientes"
+               autoplay muted loop playsinline preload="metadata"
+               poster="assets/images/producto-negro-1.jpg">
+          <source src="assets/videos/producto-video.mp4" type="video/mp4" />
+          Tu navegador no soporta la reproducción de video.
+        </video>
+        <button class="video-clientes__sonido" id="btn-sonido-video-clientes"
+                aria-label="Activar sonido del video" aria-pressed="false">
+          🔇
+        </button>
       </div>
 
       <!-- Reseñas con texto -->

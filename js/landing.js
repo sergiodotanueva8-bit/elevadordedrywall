@@ -65,34 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // ── Video del producto (slide 0): al tocar ▶ se reproduce el video ──
-  const btnPlay = document.getElementById("btn-play-video");
-  const video = document.getElementById("video-producto");
-  const posterImg = document.getElementById("video-poster-img");
-  if (btnPlay && video) {
-    btnPlay.addEventListener("click", function () {
-      // Ocultar imagen, botón y textos superpuestos; mostrar y reproducir video
-      if (posterImg) posterImg.style.display = "none";
-      btnPlay.style.display = "none";
-      document.querySelectorAll("[data-overlay-video]").forEach(function (el) {
-        el.style.display = "none";
-      });
-      video.style.display = "block";
-      video.setAttribute("controls", "controls");
-      video.play();
-    });
-    // Al terminar el video, volver a mostrar la imagen y el botón ▶
-    video.addEventListener("ended", function () {
-      video.style.display = "none";
-      video.removeAttribute("controls");
-      if (posterImg) posterImg.style.display = "";
-      btnPlay.style.display = "";
-      document.querySelectorAll("[data-overlay-video]").forEach(function (el) {
-        el.style.display = "";
-      });
-    });
-  }
-
   // Al deslizar con el dedo, detecta en qué slide quedó y actualiza dots/miniaturas
   if (carrusel) {
     let timeoutScroll;
@@ -103,6 +75,90 @@ document.addEventListener("DOMContentLoaded", function () {
         const indiceActual = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
         marcarActivo(indiceActual);
       }, 80);
+    });
+  }
+
+  // ----------------------------------------------------------
+  // GALERÍA: avance automático de imágenes (sigue siendo deslizable
+  // con el dedo/mouse en cualquier momento; el auto-avance solo se
+  // pausa un rato mientras el usuario está interactuando).
+  // ----------------------------------------------------------
+  if (carrusel && slides.length > 1) {
+    const INTERVALO_AUTOPLAY = 4000; // ms entre cada avance automático
+    const PAUSA_TRAS_INTERACCION = 6000; // ms que espera antes de retomar
+    let indiceAutoplay = 0;
+    let timerAutoplay = null;
+    let timerReanudar = null;
+
+    function slideActualPorScroll() {
+      if (!carrusel.clientWidth) return 0;
+      return Math.round(carrusel.scrollLeft / carrusel.clientWidth);
+    }
+
+    function avanzarAutomatico() {
+      indiceAutoplay = (slideActualPorScroll() + 1) % slides.length;
+      irASlide(indiceAutoplay);
+    }
+
+    function iniciarAutoplay() {
+      detenerAutoplay();
+      timerAutoplay = setInterval(avanzarAutomatico, INTERVALO_AUTOPLAY);
+    }
+
+    function detenerAutoplay() {
+      if (timerAutoplay) clearInterval(timerAutoplay);
+      timerAutoplay = null;
+    }
+
+    function pausarYReanudarLuego() {
+      detenerAutoplay();
+      clearTimeout(timerReanudar);
+      timerReanudar = setTimeout(iniciarAutoplay, PAUSA_TRAS_INTERACCION);
+    }
+
+    // Cualquier interacción manual (deslizar, tocar, usar dots/miniaturas)
+    // pausa el auto-avance un momento para no pelear con el usuario.
+    ["touchstart", "mousedown", "wheel"].forEach(function (evento) {
+      carrusel.addEventListener(evento, pausarYReanudarLuego, { passive: true });
+    });
+    dots.forEach(function (dot) { dot.addEventListener("click", pausarYReanudarLuego); });
+    miniaturas.forEach(function (m) { m.addEventListener("click", pausarYReanudarLuego); });
+
+    // Si la pestaña/sección no está visible, no seguir avanzando
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) detenerAutoplay();
+      else iniciarAutoplay();
+    });
+
+    iniciarAutoplay();
+  }
+
+  // ----------------------------------------------------------
+  // VIDEO DE CLIENTES (sección "CLIENTES FELICES"): autoplay en
+  // silencio + botón para que el usuario decida activar el sonido.
+  // ----------------------------------------------------------
+  const videoClientes = document.getElementById("video-testimonio-clientes");
+  const btnSonidoVideoClientes = document.getElementById("btn-sonido-video-clientes");
+  if (videoClientes && btnSonidoVideoClientes) {
+    // Asegura que arranque silenciado (requisito de los navegadores para autoplay)
+    videoClientes.muted = true;
+    videoClientes.play().catch(function () {
+      // Si el navegador bloquea el autoplay, no pasa nada: el poster
+      // queda visible y el usuario puede tocar el video para reproducirlo.
+    });
+
+    btnSonidoVideoClientes.addEventListener("click", function () {
+      videoClientes.muted = !videoClientes.muted;
+      const conSonido = !videoClientes.muted;
+      btnSonidoVideoClientes.textContent = conSonido ? "🔊" : "🔇";
+      btnSonidoVideoClientes.setAttribute("aria-pressed", conSonido ? "true" : "false");
+      btnSonidoVideoClientes.setAttribute(
+        "aria-label",
+        conSonido ? "Silenciar video" : "Activar sonido del video"
+      );
+      if (conSonido) {
+        videoClientes.play().catch(function () {});
+      }
     });
   }
 
